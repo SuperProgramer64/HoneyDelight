@@ -6,6 +6,7 @@
 
 ![Estado: alpha experimental](https://img.shields.io/badge/estado-alpha_experimental-e9b45d?style=flat-square)
 ![Android probado: 16](https://img.shields.io/badge/Android_probado-16-b9e7dd?style=flat-square)
+[![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue?style=flat-square)](LICENSE)
 ![Acceso root necesario](https://img.shields.io/badge/root-necesario-d5dae0?style=flat-square)
 
 [Qué hace](#qué-hace) · [Compatibilidad](#compatibilidad) · [Pruebas](#pruebas-con-evidencia) · [Hoja de ruta](#lo-que-viene)
@@ -142,6 +143,6 @@ Antes de proponer cambios, ejecuta las regresiones y explica qué caso mejora el
 
 ---
 
-Creado por **[SuperProgramer64](https://github.com/SuperProgramer64)**, con asistencia de desarrollo de Claude y Codex. HoneyDelight es un proyecto independiente, sin afiliación con Samsung, Google o Microsoft.
+Creado por **[SuperProgramer64](https://github.com/SuperProgramer64)**. HoneyDelight es un proyecto independiente, sin afiliación con Samsung, Google o Microsoft.
 
-La licencia del código original está pendiente de elección por su autor. Los componentes de terceros conservan sus propios términos.
+El código original de HoneyDelight se distribuye bajo la [licencia MIT](LICENSE), © 2026 SuperProgramer64. El alcance y las excepciones de componentes externos se detallan en [Avisos de terceros](THIRD_PARTY_NOTICES.md).

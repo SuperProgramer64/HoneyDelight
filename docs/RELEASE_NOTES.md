@@ -19,4 +19,8 @@ El ZIP no contiene historiales, contactos, correos, coordenadas, instrucciones p
 
 Este borrador es privado. No anuncia compatibilidad universal ni superioridad general frente a otros teclados. El prototipo retirado del menú Corregir no está incluido.
 
-Antes de publicar: afinar sugerencias bilingües, probar instalación limpia/arranque y decidir la licencia y distribución de componentes externos.
+Antes de publicar: afinar sugerencias bilingües, probar instalación limpia/arranque y revisar la distribución de componentes externos.
+
+## Licencia
+
+Código original bajo MIT, © 2026 SuperProgramer64. Los componentes externos, el contexto preexistente de los parches y los elementos gráficos derivados de Samsung conservan sus propios derechos; véanse `LICENSE` y `THIRD_PARTY_NOTICES.md`, adjuntos al borrador.

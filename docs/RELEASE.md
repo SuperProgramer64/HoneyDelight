@@ -7,6 +7,7 @@
 - Módulo ZIP específico de dispositivo/compilación: descarga principal.
 - APK opcional HoneyDelight Updates: avisos y descargas, sin root.
 - Código, parches, pruebas, banner y documentación.
+- `LICENSE` y `THIRD_PARTY_NOTICES.md`: licencia MIT del código original y alcance de terceros.
 
 El ZIP local contiene componentes necesarios para el mod y se conserva fuera del árbol de código. No incluye entrenamiento del usuario. Los componentes externos no adquieren una licencia abierta por aparecer en un paquete local; su distribución debe revisarse antes de publicar el binario.
 
@@ -28,7 +29,7 @@ El ZIP local contiene componentes necesarios para el mod y se conserva fuera del
 - Cambio/actualización del APK Samsung y rechazo seguro de artefactos antiguos.
 - Descarga real y notificación desde una release, incluidas alphas marcadas como prerelease.
 - Prueba de aprendizaje propio en instalación limpia y ampliación de apps/perfiles.
-- Elegir la licencia del código original y revisar distribución de componentes externos.
+- Revisar distribución de componentes externos; el código original ya tiene licencia MIT.
 
 ## Sugerencias antes del siguiente corte
 
