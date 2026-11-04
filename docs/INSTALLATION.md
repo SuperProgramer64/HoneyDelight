@@ -57,3 +57,7 @@ Desactiva o elimina `honeydelight` desde el gestor root. El módulo incluye un d
 ## Referencias
 
 Formato y scripts del módulo: [Magisk](https://topjohnwu.github.io/Magisk/guides.html), [KernelSU](https://kernelsu.org/guide/module.html). Verificación de descargas: [digests de assets de GitHub](https://docs.github.com/en/rest/releases/assets).
+
+## APK completo experimental
+
+El APK completo tiene firma propia y conserva el paquete/UID compartido de Samsung. No se puede usar como actualización directa del teclado oficial. No se ha validado su instalación ni sus permisos y servicios Galaxy AI. Para esta alpha se mantiene el módulo como método principal. Consulta [el alcance del artefacto experimental](FULL_APK.md).

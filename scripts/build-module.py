@@ -34,6 +34,8 @@ def build(root, payload, fingerprint, output):
             if not source.is_file() or source.is_symlink():
                 raise ValueError('Missing module source: ' + name)
             archive.writestr(name, source.read_bytes())
+        archive.writestr('LICENSE', (root / 'LICENSE').read_bytes())
+        archive.writestr('THIRD_PARTY_NOTICES.md', (root / 'THIRD_PARTY_NOTICES.md').read_bytes())
         archive.writestr('compat.prop', properties)
         archive.writestr('payload/SHA256SUMS', checksums)
         for name in FILES:

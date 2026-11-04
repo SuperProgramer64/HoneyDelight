@@ -28,6 +28,8 @@ public final class CandidatesRegression {
         for (String bad : new String[]{"Buenosdigas", "buenosdirás", "buenosdías"})
             if ((Boolean)display.invoke(null,"buenosdias","buenos días",bad))
                 throw new AssertionError("An accepted separation still displays joined alternatives: "+bad);
+        if ((Boolean)display.invoke(null,"holaxomo","hola cómo","Holacómo"))
+            throw new AssertionError("A typo-corrected split still displays the glued alternative");
         if (!(Boolean)display.invoke(null,"buenosdias","buenos días","buenos días a todos")
                 || !(Boolean)display.invoke(null,"progra","programa","programación")
                 || !(Boolean)display.invoke(null,"hola"," hola","holas"))

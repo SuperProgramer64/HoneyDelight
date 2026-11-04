@@ -552,8 +552,14 @@ public final class Bridge {
         int max = Math.min(before.length(), word.length());
         for (int prefix = max; prefix >= 0; prefix--) {
             String rest = word.substring(prefix);
-            if (before.endsWith(word.substring(0, prefix)) && after.startsWith(rest))
-                return after.substring(rest.length());
+            String actualPrefix = before.substring(before.length() - prefix);
+            String expectedPrefix = word.substring(0, prefix);
+            boolean samePrefix = Decide.norm(actualPrefix).equals(Decide.norm(expectedPrefix))
+                    || (prefix >= 4 && word.length() >= 5
+                        && Decide.oneEdit(Decide.norm(actualPrefix), Decide.norm(expectedPrefix)));
+            boolean sameRest = after.length() >= rest.length()
+                    && Decide.norm(after.substring(0, rest.length())).equals(Decide.norm(rest));
+            if (samePrefix && sameRest) return after.substring(rest.length());
         }
         return after;
     }

@@ -21,6 +21,9 @@ public final class JoinedRegression {
         repeated.setAccessible(true);
         for (String value : new String[]{"Ytytúú", "Ytytútú", "YtúYtútú", "Ytútútú"})
             if (!(Boolean) repeated.invoke(null, "Ytú", value)) throw new AssertionError("Loop accepted: " + value);
+        for (String[] pair : new String[][]{{"holaxomo","holacómoholaxomo"},{"holacómo","holacómoholaxomo"}})
+            if (!(Boolean) repeated.invoke(null,pair[0],pair[1]))
+                throw new AssertionError("Corrected composition is concatenated to the current input");
         for (String[] pair : new String[][]{{"coco","cocodrilo"},{"progra","programación"},{"Ytú","Y tú"},{"Ytú","Tú"}})
             if ((Boolean) repeated.invoke(null, pair[0],pair[1])) throw new AssertionError("Valid suggestion rejected");
         System.out.println("PASS repeated decoder expansions, valid completions, word separation");

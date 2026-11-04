@@ -49,7 +49,7 @@ Comprobados **en la barra del teclado y al pulsar espacio en Google**, el 4 de n
 | `tequiero` | te quiero |
 | `porfavor` | por favor |
 
-Los 16 casos de la tabla local se resuelven sin gastar el presupuesto opcional de búsqueda del motor. El resto sigue pasando por el separador general, que aún necesita trabajo. `gustamucho → gusta mucho` también pasó el control en Google; `holacomo → hola cómo` todavía falla de forma intermitente.
+Los 16 casos de la tabla local se resuelven sin gastar el presupuesto opcional de búsqueda del motor. El resto sigue pasando por el separador general, que aún necesita trabajo. `gustamucho → gusta mucho` también pasó el control en Google; la revisión más reciente añade corrección de una letra en la parte derecha y evita duplicar la composición al retroceder.
 
 Las posiciones del dedo ya llegan al motor. La calibración personalizada existe, pero la dejé apagada: hasta que no demuestre que acierta más, no se activa.
 
@@ -86,6 +86,16 @@ La APK de Updates vive en `/data/app` y se actualiza como cualquier app con la m
 
 El repositorio sigue **privado mientras lo preparo**. El actualizador solo consulta releases públicas, así que la APK no lleva credenciales de GitHub.
 
+### Tres paquetes, tres funciones
+
+| Archivo | Para qué sirve | Estado |
+| :--- | :--- | :--- |
+| **Módulo ZIP** | Aplicar HoneyDelight conservando el APK firmado por Samsung. | Entrega principal; preparación e integridad verificadas. Falta validar activación desde el gestor y primer arranque. |
+| **HoneyDelight Updates APK** | Consultar y descargar módulos compatibles. Interfaz renovada, iconos adaptativos y avisos. | App opcional, sin root ni modelos aprendidos. `0.1.0-alpha.2`, con la misma firma de las versiones de prueba. |
+| **Keyboard APK experimental** | APK completo con código modificado, biblioteca y modelos base incluidos. | Firmado con clave propia; no actualiza directamente el teclado oficial. Instalación y permisos/servicios de Samsung pendientes de validar. |
+
+[Qué contiene el APK completo y por qué es experimental →](docs/FULL_APK.md)
+
 [Instalación, comandos y recuperación →](docs/INSTALLATION.md)
 
 ## Cómo lo probé
@@ -95,13 +105,13 @@ La revisión actual tiene pruebas en tres niveles:
 | Prueba | Resultado y alcance |
 | :--- | :--- |
 | **Regresiones JVM** | 17 grupos pasaron: arranque por perfil, privacidad, editor, candidatos, respuestas atrasadas y separación, entre otros. |
-| **Ruta completa con Delight real** | 80/80 casos de regresión: 20 entradas, dos repeticiones y dos variantes de coordenadas. Incluye expresiones pegadas y palabras que deben conservarse. |
+| **Ruta completa con Delight real** | Última repetición: **90/92**; una anterior obtuvo 92/92. Son 23 entradas, dos repeticiones y dos variantes de coordenadas. `holaxomo` y `holacomo` fallaron una vez cada una con coordenadas y presupuesto de 55 ms; la separación sigue siendo intermitente en ese recorrido. |
 | **Barra y espacio en Google** | Las seis combinaciones de la tabla anterior mostraron separación en la barra y quedaron separadas al pulsar espacio. |
-| **Controles adicionales en Google** | `gustamucho → gusta mucho`, `programacion → programación` y `cocodrilo → cocodrilo` pasaron. `holacomo` quedó como `holacómo`: falta la separación. |
+| **Controles adicionales en Google** | `gustamucho → gusta mucho`, `programacion → programación` y `cocodrilo → cocodrilo` pasaron. `holacomo` había quedado como `holacómo`. La revisión posterior mejoró esos casos; en Google ya se verificaron la sugerencia separada, la confirmación con espacio y el retroceso en ambos casos. |
 | **Comparación ampliada del cálculo** | 82/84 decisiones esperadas. Los dos fallos fueron `erroes → errors` con coordenadas simuladas; la mezcla español/inglés sigue pendiente. |
 | **Empaquetado y actualizador** | Pasaron las pruebas de exclusión de datos personales, compatibilidad, parche, CRC y selección/verificación de descargas. |
 
-Los **80/80 son una regresión concreta, no un porcentaje de precisión global** ni una comparación general con Gboard. La prueba nativa usa diccionarios base; los contenedores de prueba y los datos aprendidos no se empaquetan en el teclado.
+Estas cifras corresponden a una regresión concreta, no a un porcentaje de precisión global ni una comparación general con Gboard. La prueba nativa usa diccionarios base; los contenedores de prueba y los datos aprendidos no se empaquetan en el teclado.
 
 La fluidez del editor tampoco se ajustó solo a ojo: las trazas mostraron una espera circular de Samsung de unos 500 ms antes del arreglo. Después, el usuario confirmó menos lag en ambos campos. No atribuyo a la revisión una latencia final exacta que no se haya medido.
 
@@ -109,7 +119,7 @@ En otra evaluación del toque reservé 100 palabras: centros de las teclas, coor
 
 ### Lo que todavía falla
 
-- El separador general puede dejar formas como `holacómo` pegadas. La tabla local de expresiones frecuentes no resuelve cualquier combinación posible.
+- La separación general aún tiene fallos intermitentes con el presupuesto corto de 55 ms; la última repetición nativa obtuvo 90/92. La revisión del caso `holaxomo` también comprueba espacio y retroceso; una tabla local de expresiones frecuentes no resuelve cualquier combinación posible.
 - La mezcla español/inglés puede elegir una corrección del otro idioma.
 - La carga efectiva en el perfil de apps duplicadas aún necesita comprobación en uso, aunque la regresión de arranque por perfil pasó.
 - Cuando queda una sola sugerencia, Samsung la coloca a la izquierda; el centrado no se ha modificado.

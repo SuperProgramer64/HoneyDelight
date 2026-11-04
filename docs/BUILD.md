@@ -19,7 +19,7 @@ python3 scripts/tests/test_module.py
 bash manager/tests/run.sh
 ```
 
-Los diecisiete grupos JVM no cargan el motor nativo. Las pruebas del empaquetador trabajan con datos ficticios. La herramienta de instalación tiene además una prueba JVM de CRC en `module-tools/tests/test_crc.py`. La plantilla de CI está en `docs/ci-tests.yml.example` y puede activarse más adelante desde GitHub.
+Los diecinueve grupos JVM no cargan el motor nativo. Las pruebas del empaquetador trabajan con datos ficticios. La herramienta de instalación tiene además una prueba JVM de CRC en `module-tools/tests/test_crc.py`. La plantilla de CI está en `docs/ci-tests.yml.example` y puede activarse más adelante desde GitHub.
 
 ## Generar un módulo para el dispositivo
 
@@ -59,3 +59,7 @@ bash scripts/test-native-predictions.sh
 ```
 
 Usa solo los tres componentes base fijados por hash. Ejecuta la ruta completa de cálculo con contenedores de prueba de Samsung y el motor Delight real; no instala el teclado, no abre apps ni consulta datos aprendidos. Incluye palabras pegadas, formas válidas, nombres y dos variantes de coordenadas. Es una regresión del cálculo; la barra visual y la confirmación con espacio requieren comprobación aparte.
+
+## APK completo experimental
+
+La variante completa se compila por separado para incluir la preparación de modelos de `port/apk-src/`. Usa `scripts/build-full-apk.sh`; requiere la clave de firma propia y el payload actual. No se instala automáticamente. Los detalles, pruebas y límites de firma están en [FULL_APK.md](FULL_APK.md).

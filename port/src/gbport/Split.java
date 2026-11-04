@@ -51,19 +51,37 @@ public final class Split {
         lit.clear(); splits.clear(); rights.clear();
     }
 
-    // Mejor forma de la palabra (exacta o con otra tilde/ñ, nunca solo mayúsculas) entre los candidatos. null si no.
+    // Mejor forma de la palabra (exacta, con otra tilde/ñ o con mayúscula inicial normalizada) entre los candidatos. null si no.
     static Object[] bestForm(List<Delight.Cand> cs, String w) {
         String nw = Decide.norm(w);
         Object[] best = null;
         for (Delight.Cand c : cs) {
             if (Float.isNaN(c.score) || c.type == 3) continue;
             boolean exact = c.text.equals(w);
+            boolean caseOnly = !exact && c.text.equalsIgnoreCase(w) && !Decide.innerUpper(c.text);
             boolean accent = !exact && !c.text.equalsIgnoreCase(w) && Decide.norm(c.text).equals(nw);
-            if (!exact && !accent) continue;
-            double sc = exact ? c.score : Decide.fair(c, w);
-            if (best == null || sc > (Double) best[1]) best = new Object[]{c.text, sc};
+            if (!exact && !caseOnly && !accent) continue;
+            double sc = exact || caseOnly ? c.score : Decide.fair(c, w);
+            if (best == null || sc > (Double) best[1]) best = new Object[]{caseOnly ? w : c.text, sc};
         }
         return best;
+    }
+
+    static Object[] rightForm(List<Delight.Cand> candidates, String word) {
+        Object[] exact = bestForm(candidates, word);
+        if (exact != null && (Double) exact[1] >= PART_MIN) return exact;
+        Decide.Result correction = Decide.decide(candidates, word, false);
+        Delight.Cand candidate = correction.cand;
+        if (word.length() >= 3 && candidate != null && Float.isFinite(candidate.score)
+                && candidate.score >= PART_MIN && !Decide.innerUpper(word)
+                && Decide.oneEdit(Decide.norm(word), Decide.norm(candidate.text))
+                && !candidate.text.contains(" ") && !Decide.repeatedExpansion(word, candidate.text)) {
+            String text = candidate.text;
+            if (Character.isLowerCase(word.charAt(0)) && !Decide.innerUpper(text))
+                text = Character.toLowerCase(text.charAt(0)) + text.substring(1);
+            return new Object[]{text, (double)candidate.score};
+        }
+        return exact;
     }
 
     // Apunta la decodificación normal de la palabra en curso (llamar en cada tecla con sus candidatos).
@@ -95,7 +113,7 @@ public final class Split {
             return result;
         }
         Object[] whole = lit.get(w);
-        if (whole != null && (Double) whole[1] >= TRY_BELOW) return null;
+        if (whole != null && w.equals(whole[0]) && (Double) whole[1] >= TRY_BELOW) return null;
         // Recover missing prefixes when Samsung delivered several letters at once.
         // Start near the middle, then expand. Each invocation has a fixed work budget.
         int probes = 0;
@@ -121,7 +139,13 @@ public final class Split {
             Result sp = splits.get(p);
             if (sp != null) opts.add(new Object[]{i, sp.text, sp.score});
         }
-        opts.sort((a, b) -> Double.compare((Double) b[2], (Double) a[2]));
+        opts.sort((a, b) -> {
+            boolean firstPhrase = ((String)a[1]).contains(" "), secondPhrase = ((String)b[1]).contains(" ");
+            if (firstPhrase != secondPhrase) return firstPhrase ? 1 : -1;
+            // Priorizar una palabra izquierda completa frente a prefijos breves muy frecuentes.
+            int length = Integer.compare((Integer)b[0], (Integer)a[0]);
+            return length != 0 ? length : Double.compare((Double)b[2], (Double)a[2]);
+        });
         Result best = splits.get(w); // Un plazo agotado no invalida un corte ya comprobado con este contexto.
         int done = 0;
         for (Object[] o : opts) {
@@ -132,7 +156,7 @@ public final class Split {
             String key = left + "|" + right;
             Object[] rf = rights.get(key);
             if (rf == null && !rights.containsKey(key)) {
-                rf = bestForm(Delight.parseCands(Delight.suggestEchoRaw(before + left + " ", after, right, 8)), right);
+                rf = rightForm(Delight.parseCands(Delight.suggestEchoRaw(before + left + " ", after, right, 8)), right);
                 rights.put(key, rf);
                 done++;
             }
@@ -148,7 +172,7 @@ public final class Split {
     public static boolean wins(Result r, double litScore, double single) {
         if (r == null) return false;
         if (!Double.isNaN(litScore) && litScore >= TRY_BELOW) return false;     // lo tecleado ya es palabra corriente
-        double ref = (Double.isNaN(single) ? PART_MIN : single) - PART_PENALTY;
+        double ref = (Double.isNaN(single) ? Decide.OOV_LITERAL - MARGIN : single) - PART_PENALTY;
         return r.score >= ref + MARGIN;
     }
 

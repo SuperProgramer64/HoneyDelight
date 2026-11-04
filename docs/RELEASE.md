@@ -6,6 +6,7 @@
 
 - Módulo ZIP específico de dispositivo/compilación: descarga principal.
 - APK opcional HoneyDelight Updates: avisos y descargas, sin root.
+- APK completo del teclado, experimental y con firma propia, sin validación de instalación/servicios Samsung.
 - Código, parches, pruebas, banner y documentación.
 - `LICENSE` y `THIRD_PARTY_NOTICES.md`: licencia MIT del código original y alcance de terceros.
 
@@ -13,7 +14,7 @@ El ZIP local contiene componentes necesarios para el mod y se conserva fuera del
 
 ## Comprobado
 
-- Diecisiete grupos JVM del puente, incluidos privacidad, arranque por perfil y respuestas atrasadas.
+- Diecinueve grupos JVM del puente, incluidos privacidad, arranque por perfil y respuestas atrasadas.
 - Resolución de parches por descriptor de clase.
 - Exclusión de historial/token ficticios en el empaquetador.
 - Rechazo de APK/fingerprint incorrectos en la validación.

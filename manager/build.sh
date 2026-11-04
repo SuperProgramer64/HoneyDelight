@@ -6,10 +6,10 @@ source ../scripts/env.sh
 : "${MANAGER_STORE_PASS:?Set MANAGER_STORE_PASS in the environment}"
 BT="$ANDROID_HOME/build-tools/${ANDROID_BUILD_TOOLS_VERSION:-34.0.0}"
 rm -rf build
-mkdir -p build/classes assets
-cp ../assets/banner.png assets/banner.png
+mkdir -p build/classes build/legal-assets
+cp ../LICENSE ../THIRD_PARTY_NOTICES.md build/legal-assets/
 "$BT/aapt2" compile --dir res -o build/res.zip
-"$BT/aapt2" link -o build/base.apk -I "$ANDROID_JAR" --manifest AndroidManifest.xml -A assets build/res.zip
+"$BT/aapt2" link -o build/base.apk -I "$ANDROID_JAR" --manifest AndroidManifest.xml -A build/legal-assets build/res.zip
 sources=()
 while IFS= read -r -d '' f; do sources+=("$f"); done < <(find src -name '*.java' -print0)
 javac --release 11 -encoding UTF-8 -cp "$ANDROID_JAR" -d build/classes "${sources[@]}"

@@ -90,6 +90,13 @@ public final class Decide {
         if (typed.length() < 3 || value.length() < typed.length() + 2 || candidate.contains(" ")) return false;
         int first = value.indexOf(typed);
         if (first >= 0 && value.indexOf(typed, first + typed.length()) >= 0) return true;
+        if (typed.length() >= 5 && value.length() >= typed.length() * 2 - 2) {
+            for (int cut = typed.length() - 1; cut <= typed.length() + 1 && cut < value.length(); cut++) {
+                String left = value.substring(0, cut), right = value.substring(cut);
+                if ((left.equals(typed) || oneEdit(left, typed))
+                        && (right.equals(typed) || oneEdit(right, typed))) return true;
+            }
+        }
         String head = typed.substring(0, 2);
         if (!typed.startsWith(head + head) && value.startsWith(head + head)) return true;
         String tail = typed.substring(typed.length() - 2);
@@ -120,7 +127,8 @@ public final class Decide {
     public static boolean displayAlternative(String word, String correction, String candidate) {
         if (correction == null) return true;
         String trimmed = correction.trim();
-        boolean separated = trimmed.contains(" ") && norm(trimmed.replace(" ", "")).equals(norm(word));
+        String joined = norm(trimmed.replace(" ", "")), typed = norm(word);
+        boolean separated = trimmed.contains(" ") && (joined.equals(typed) || oneEdit(joined, typed));
         // Si ya se aceptó el corte, las variantes sin ese límite no deben ocupar la barra.
         return !separated || candidate.contains(" ");
     }

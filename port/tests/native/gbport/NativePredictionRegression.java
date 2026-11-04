@@ -11,13 +11,14 @@ public final class NativePredictionRegression {
   int failures=0,total=0;
   long elapsed=0;
   for(int spatial=0;spatial<2;spatial++)for(int round=0;round<2;round++)for(String[] sample:new String[][]{
-   {"hastamanana","hasta mañana"},{"buenosdias","buenos días"},{"buenastardes","buenas tardes"},
+   {"holaxomo","hola cómo"},{"holacomo","hola cómo"},{"holacómo","hola cómo"},{"hastamanana","hasta mañana"},{"buenosdias","buenos días"},{"buenastardes","buenas tardes"},
    {"buenasnoches","buenas noches"},{"tequiero","te quiero"},{"porfavor","por favor"},
    {"muchasgracias","muchas gracias"},{"todobien","todo bien"},{"nosvemos","nos vemos"},
    {"programación","programación"},{"cocodrilo","cocodrilo"},{"mañana","mañana"},
    {"camiseta","camiseta"},{"mariposa","mariposa"},{"cancion","canción"},
    {"HoneyDelight","HoneyDelight"},{"Camila","Camila"},{"kukuruzo","kukuruzo"},
    {"jajaja","jajaja"},{"nooooo","nooooo"}}){
+   if (args.length > 1 && !sample[0].startsWith(args[1])) continue;
    Split.clearCache();String typed=sample[0];Bridge.Out result=null;
    for(int i=1;i<=typed.length();i++){
     String prefix=typed.substring(0,i);float[][] points=null;
@@ -26,6 +27,9 @@ public final class NativePredictionRegression {
     result=Bridge.compute(null,null,prefix,false,System.nanoTime()+55_000_000L,points,new EditorContext("",""));
     elapsed+=System.nanoTime()-started;
    }
+   if (args.length > 1) System.out.println("DETAIL whole="+java.util.Arrays.toString(Split.lit.get(typed))
+       +" left="+java.util.Arrays.toString(Split.lit.get("hola"))+" right="
+       +java.util.Arrays.toString(Split.rights.get("hola|"+typed.substring(4))));
    String best=result.p==null||result.p.isEmpty()?"":result.p.get(0).getPrediction();total++;
    boolean pass=sample[1].equals(best);if(!pass)failures++;
    StringBuilder all=new StringBuilder();if(result.p!=null)for(int k=0;k<Math.min(3,result.p.size());k++)all.append('|').append(result.p.get(k).getPrediction());

@@ -36,7 +36,7 @@ También se filtran expansiones repetidas aunque su puntuación sea alta, se ord
 
 La revisión se instaló mediante los montajes de desarrollo, conservando una copia anterior y sin reiniciar el teléfono. La verificación interactiva de ambos perfiles está en curso; esto no valida el primer arranque del módulo.
 
-La comprobación inicial en Google detectó dos fallos interactivos (`erroes` y `buenosdias`) que el arnés aislado no mostraba. Una repetición confirmó tanto el resultado pegado `buenosdías` como el resultado separado `buenos días`; no se considera solucionado solo por esa repetición. Se añadieron pruebas que reproducen la pérdida de un corte válido cuando expira el presupuesto y la reutilización de decisiones incompletas al pulsar espacio. Ambas pasan con la revisión instalada más reciente. La comprobación interactiva final queda pendiente.
+La comprobación inicial en Google detectó dos fallos interactivos (`erroes` y `buenosdias`) que el arnés aislado no mostraba. Una repetición confirmó tanto el resultado pegado `buenosdías` como el resultado separado `buenos días`; no se considera solucionado solo por esa repetición. Se añadieron pruebas que reproducen la pérdida de un corte válido cuando expira el presupuesto y la reutilización de decisiones incompletas al pulsar espacio. Ambas pasan con la revisión instalada más reciente. La comprobación interactiva posterior figura en las secciones siguientes.
 
 Cuando un corte ha sido aceptado, la barra omite alternativas pegadas que contrarían ese corte. Esto evita mostrar `Buenosdigas` o `buenosdirás` junto a una separación validada, sin aplicar el filtro a completaciones normales ni al espacio de puntuación.
 
@@ -52,4 +52,18 @@ Esta revisión se instaló por los montajes de desarrollo. En Google, las seis c
 
 ### Controles finales en Google
 
-En la revisión con expresiones locales pasaron las seis combinaciones tanto en la barra como al confirmar con espacio. Los controles adicionales conservaron `cocodrilo`, corrigieron `programacion → programación` y separaron `gustamucho → gusta mucho`. `holacomo` quedó `holacómo`: el separador general sigue pendiente y este control se registra como fallo, sin considerarlo resuelto por las pruebas del arnés.
+En la revisión con expresiones locales pasaron las seis combinaciones tanto en la barra como al confirmar con espacio. Los controles adicionales conservaron `cocodrilo`, corrigieron `programacion → programación` y separaron `gustamucho → gusta mucho`. `holacomo` quedó `holacómo` en esta etapa. La sección posterior registra su reparación y la comprobación interactiva.
+
+## Composición corregida y retroceso
+
+Se reprodujo en Google que `holacomo` y `holaxomo` podían terminar como `holacómo`, y que al retroceder la barra podía concatenar la composición corregida y la antigua. Una regresión demostró que `EditorContext` no excluía del contexto el token cuando la forma del campo difería por tilde o una letra. Se corrige también el caso de cursor dentro de esa composición, conservando el texto realmente posterior.
+
+El separador ahora admite corregir una letra en la parte derecha solo con la decisión y puntuación del motor, conserva palabras válidas, normaliza la mayúscula inicial de prefijos y descarta concatenaciones entre la forma corregida y la antigua. La búsqueda prioriza una palabra izquierda completa y no considera que poner tilde a una forma pegada baste para declararla válida. Se ajustó la referencia cuando el motor no devuelve puntuación del literal; las partes deben seguir pasando su validación individual.
+
+Pasaron 19 grupos JVM y la regresión nativa ampliada, 92/92 casos (23 entradas, dos repeticiones y dos variantes de coordenadas). Incluye `holaxomo`, `holacomo` y `holacómo` sin añadir esas formas a la tabla de expresiones frecuentes. La revisión está instalada y la comprobación en Google pasó para `holacomo` y `holaxomo`: la barra mostró `hola cómo`, espacio lo confirmó separado y retroceso conservó la separación sin las concatenaciones reproducidas.
+
+## Verificación final de paquetes
+
+La repetición nativa posterior obtuvo **90/92**, frente al 92/92 anterior. Fallaron `holaxomo` y `holacomo` en la primera ronda con coordenadas, bajo el presupuesto de 55 ms; ambas pasaron en la otra ronda. La causa temporal precisa no está aislada. No se considera estable al 100 % esa ruta de separación. No se cambió el motor para ocultar esta repetición.
+
+La auditoría del APK completo comprobó 4.993 entradas originales idénticas, hashes de componentes base y ausencia de clases de prueba. Se verificaron firma y alineación; instalación y ejecución completas siguen sin validar. El módulo excluye las clases de preparación propias del APK. HoneyDelight Updates 0.1.0-alpha.2 se instaló sobre la versión anterior y su pantalla principal mostró el identificador de compatibilidad esperado.

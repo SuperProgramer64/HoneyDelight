@@ -24,3 +24,5 @@ java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.SessionRegres
 java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.SplitBudgetRegression
 java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.CommitRefreshRegression
 java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.CommonBoundaryRegression
+java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.CorrectionContextRegression
+java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.SplitTypoRegression

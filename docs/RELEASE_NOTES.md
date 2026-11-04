@@ -2,47 +2,31 @@
 
 **Tu Samsung Keyboard, con un toque de Delight.**
 
-Primera preparación del mod que conecta Delight5 con la interfaz de Samsung Keyboard y amplía las herramientas de Galaxy AI.
+Conecta Delight5 con Samsung Keyboard y amplía las herramientas de Galaxy AI. Esta alpha incluye mejoras de contexto, separación de palabras pegadas, filtros contra sugerencias repetidas y una reparación de las esperas del editor de reescritura.
 
-Incluye mejoras de contexto, separación de palabras pegadas, filtros contra sugerencias repetidas, gestos, mayúsculas, aprendizaje local y una reparación de las esperas del editor de reescritura.
+## Paquetes
 
-## Descargas
+- **Módulo ZIP**: entrega principal para el Galaxy S25+ SM-S936B de desarrollo, Android 16 / One UI 8.5 y Samsung Keyboard 5.9.30.97. Valida compatibilidad e integridad y conserva el APK firmado por Samsung.
+- **HoneyDelight Updates 0.1.0-alpha.2** (`versionCode=3`): complemento opcional, con interfaz ámbar renovada e iconos adaptativos. Consulta releases públicas, avisa y descarga por redes sin medición; mantiene la firma de la app anterior. La actualización sobre la app instalada y la pantalla principal se comprobaron en el teléfono de desarrollo. No requiere root ni lee aprendizaje del teclado.
+- **Keyboard APK experimental**: paquete completo con el mod, biblioteca nativa y modelos base. Usa firma propia y no actualiza directamente el teclado oficial. Instalación, permisos de firma y Galaxy AI sin validar; véase [FULL_APK.md](FULL_APK.md).
 
-- **Módulo ZIP**: entrega principal. Este paquete corresponde al Galaxy S25+ SM-S936B de desarrollo, Android 16 / One UI 8.5 y Samsung Keyboard 5.9.30.97. La instalación valida APK, compilación y checksums.
-- **HoneyDelight Updates APK**: complemento opcional para consultar releases públicas, avisar y descargar por redes sin medición. No requiere root ni lee modelos aprendidos. Las actualizaciones de la app conservan su firma.
+## Cambios comprobados
 
-## Estado de prueba
+- Inicio con el directorio del perfil actual y reintentos tras fallos temporales.
+- Contexto actualizado al cambiar de frase o campo; descarte de resultados atrasados y exclusión temprana de contraseñas.
+- Filtros contra expansiones repetidas y alternativas pegadas cuando existe una separación aceptada.
+- Conservación de cortes válidos al agotarse el presupuesto opcional y revisión final al pulsar espacio en Google.
+- Tabla local de 16 expresiones frecuentes y separador general con corrección conservadora de una letra en la segunda palabra.
+- Composición corregida excluida del contexto: `holacomo` y `holaxomo` muestran y confirman `hola cómo`; retroceso y reescritura conservan la separación sin las concatenaciones reproducidas.
 
-La construcción completa, la validación del paquete y la preparación local de ART en una carpeta de prueba del dispositivo pasaron. La activación del módulo, el primer arranque, la recuperación y una descarga de release de extremo a extremo aún necesitan prueba.
+## Pruebas y límites
 
-El ZIP no contiene historiales, contactos, correos, coordenadas, instrucciones personales, logs ni claves del usuario. Utiliza componentes base; el aprendizaje de cada instalación se mantiene local.
+Pasaron **19 grupos JVM**. La última repetición nativa obtuvo **90/92**, frente a 92/92 en una anterior, con modelos base: 23 entradas, dos repeticiones y dos variantes de coordenadas. En Google se comprobaron seis expresiones frecuentes en la barra y al pulsar espacio, además de los controles y el ciclo de retroceso anteriores. En la repetición más reciente, `holaxomo` y `holacomo` fallaron una vez cada una con coordenadas y presupuesto de 55 ms; queda documentada esa intermitencia. Estas muestras no son una cifra de precisión global ni una comparación general con Gboard.
 
-Este borrador es privado. No anuncia compatibilidad universal ni superioridad general frente a otros teclados. El prototipo retirado del menú Corregir no está incluido.
+La comparación ampliada anterior obtuvo 82/84 decisiones esperadas: sigue abierto el caso bilingüe `erroes → errors` con coordenadas simuladas. La activación del módulo desde el gestor, el primer arranque, la recuperación y una descarga pública de extremo a extremo aún requieren prueba. La preparación local de ART del ZIP pasó en una carpeta de prueba del dispositivo.
 
-Antes de publicar: afinar sugerencias bilingües, probar instalación limpia/arranque y revisar la distribución de componentes externos.
+El prototipo retirado del menú Corregir no está incluido. Los paquetes excluyen historiales entrenados, contactos, correos, instrucciones personales, logs, claves y contraseñas del desarrollador. El aprendizaje de cada instalación se mantiene local.
 
 ## Licencia
 
-Código original bajo MIT, © 2026 SuperProgramer64. Los componentes externos, el contexto preexistente de los parches y los elementos gráficos derivados de Samsung conservan sus propios derechos; véanse `LICENSE` y `THIRD_PARTY_NOTICES.md`, adjuntos al borrador.
-
-## Revisión de sugerencias y conexión
-
-- Inicio con el directorio del perfil actual y reintentos tras fallos temporales.
-- Actualización del prefijo al cambiar contexto para evitar reutilizar la puntuación de otra frase.
-- Filtro de sugerencias repetidas independiente de su puntuación y ordenación de alternativas.
-- Descarte de respuestas atrasadas al cambiar de palabra/campo.
-- Exclusión temprana de contraseñas y tolerancia a atajos opcionales de emoji dañados.
-- Diecisiete regresiones JVM, ocho separaciones y seis cambios de contexto comprobados; comparación de 28 frases sin datos personales.
-
-- Conservación de separaciones ya comprobadas al agotarse el presupuesto opcional.
-- Revisión final de palabras desconocidas o cortes incompletos al pulsar espacio en Google.
-- Filtro de alternativas pegadas cuando se acepta una separación.
-- La revisión de estos tres ajustes está instalada; su comprobación interactiva final está pendiente.
-
-## Expresiones frecuentes
-
-Tabla local de 16 expresiones: saludos, despedidas y fórmulas frecuentes. Mantiene el separador general para los demás casos. La revisión de prioridad de cortes que empeoró la barra fue retirada.
-
-Diecisiete grupos JVM y 80/80 casos en la nueva regresión nativa. La comparación ampliada de 84 casos deja dos errores bilingües documentados (`erroes → errors` con coordenadas simuladas). La comprobación en Google pasó seis combinaciones tanto en la barra como al pulsar espacio, incluida `hastamanana → hasta mañana`.
-
-Los controles adicionales en Google confirmaron `gustamucho → gusta mucho`, `programacion → programación` y la conservación de `cocodrilo`. `holacomo` todavía puede quedar como `holacómo`; es un fallo abierto del separador general.
+Código original bajo MIT, © 2026 SuperProgramer64. Los componentes externos y elementos derivados conservan sus propios derechos; véanse `LICENSE` y `THIRD_PARTY_NOTICES.md`. El borrador permanece privado; antes de publicar falta validar instalación y revisar los permisos de distribución de los componentes externos.

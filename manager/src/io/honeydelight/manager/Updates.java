@@ -53,7 +53,7 @@ final class Updates {
  static void notifyReady(Context context,String tag){
   NotificationManager manager=context.getSystemService(NotificationManager.class);manager.createNotificationChannel(new NotificationChannel("updates","Actualizaciones de HoneyDelight",NotificationManager.IMPORTANCE_DEFAULT));
   PendingIntent action=PendingIntent.getActivity(context,0,new Intent(context,MainActivity.class),PendingIntent.FLAG_IMMUTABLE|PendingIntent.FLAG_UPDATE_CURRENT);
-  Notification n=new Notification.Builder(context,"updates").setSmallIcon(android.R.drawable.stat_sys_download_done).setContentTitle("HoneyDelight "+tag+" disponible").setContentText("Módulo verificado en Descargas/HoneyDelight. Instálalo desde tu gestor root.").setAutoCancel(true).setContentIntent(action).build();
+  int small=context.getResources().getIdentifier("ic_stat_honey","drawable",context.getPackageName());Notification n=new Notification.Builder(context,"updates").setSmallIcon(small!=0?small:android.R.drawable.stat_sys_download_done).setColor(0xffefb44f).setContentTitle("HoneyDelight "+tag+" disponible").setContentText("Módulo verificado en Descargas/HoneyDelight. Instálalo desde tu gestor root.").setAutoCancel(true).setContentIntent(action).build();
   try{manager.notify(1,n);}catch(SecurityException ignored){}
  }
 }

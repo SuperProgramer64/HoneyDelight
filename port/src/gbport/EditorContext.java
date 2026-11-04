@@ -7,17 +7,23 @@ final class EditorContext {
 
     static EditorContext fromRaw(String rawBefore, String rawAfter, String word) {
         String before = rawBefore;
+        String after = Bridge.afterComposition(rawBefore, rawAfter, word);
         if (word != null && !word.isEmpty()) {
             if (before.endsWith(word)) before = before.substring(0, before.length() - word.length());
             else {
                 int i = before.length();
                 while (i > 0 && (Character.isLetter(before.charAt(i - 1)) || before.charAt(i - 1) == '\'' || before.charAt(i - 1) == '’')) i--;
-                String run = before.substring(i).toLowerCase(java.util.Locale.ROOT);
-                String lower = word.toLowerCase(java.util.Locale.ROOT);
-                if (!run.isEmpty() && (lower.startsWith(run) || run.startsWith(lower))) before = before.substring(0, i);
+                String run = Decide.norm(before.substring(i)), normalized = Decide.norm(word);
+                int removedAfter = rawAfter.length() - after.length();
+                String fullRun = run + Decide.norm(rawAfter.substring(0, removedAfter));
+                if (!run.isEmpty() && (normalized.startsWith(run) || run.startsWith(normalized)
+                        || (run.length() >= 4 && normalized.length() >= 5 && Decide.oneEdit(run, normalized))
+                        || (removedAfter > 0 && fullRun.length() >= 4 && normalized.length() >= 5
+                            && (fullRun.equals(normalized) || Decide.oneEdit(fullRun, normalized)))))
+                    before = before.substring(0, i);
             }
         }
-        return new EditorContext(before, Bridge.afterComposition(rawBefore, rawAfter, word));
+        return new EditorContext(before, after);
     }
 
     static EditorContext fromSelection(CharSequence text, int start, int end, String word) {

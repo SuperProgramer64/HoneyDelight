@@ -21,6 +21,8 @@ class ModuleTests(unittest.TestCase):
             shutil.copytree(SOURCE / 'module', root / 'module')
             (root / 'module/tools.dex').write_bytes(b'fixture installer tool')
             (root / 'module/ai_token').write_text('PRIVATE_TEMPLATE_TOKEN_MUST_NOT_SHIP')
+            (root / 'LICENSE').write_text('fixture MIT license')
+            (root / 'THIRD_PARTY_NOTICES.md').write_text('fixture third-party notices')
             (root / 'patches').mkdir()
             (root / 'patches/compatibility.json').write_text(json.dumps({'samsung_apk_sha256': 'a' * 64}))
             (root / 'payload').mkdir()
@@ -35,6 +37,8 @@ class ModuleTests(unittest.TestCase):
             (root / 'payload/ai_token').write_text('PRIVATE_TOKEN_MUST_NOT_SHIP')
             output = builder.build(root, root / 'payload', 'demo/device:16/build/user/release-keys', root / 'out.zip')
             with zipfile.ZipFile(output) as archive:
+                self.assertEqual(archive.read('LICENSE'), b'fixture MIT license')
+                self.assertEqual(archive.read('THIRD_PARTY_NOTICES.md'), b'fixture third-party notices')
                 self.assertNotIn('payload/UserHistory.dict', archive.namelist())
                 self.assertNotIn('payload/ai_token', archive.namelist())
                 for name in archive.namelist():

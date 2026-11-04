@@ -15,3 +15,7 @@ La API de GitHub debe devolver el digest SHA-256 del asset. Si no existe un dige
 La tarea periódica usa JobScheduler, cada seis horas aproximadamente y con red sin medición. Android puede diferirla por batería o restricciones. No se instala ni se reinicia automáticamente. Las notificaciones necesitan permiso del usuario.
 
 No se ha validado aún una descarga de extremo a extremo desde una release real; hace falta la primera publicación de prueba.
+
+## Interfaz de la app
+
+La revisión `0.1.0-alpha.2` añade estados de búsqueda/descarga, información de compatibilidad, controles de avisos e iconos adaptativos. Conserva la firma del actualizador anterior y usa `versionCode=3`. El APK completo experimental del teclado no se descarga ni instala automáticamente desde esta app; su selección automática sigue limitada al ZIP del módulo compatible.
