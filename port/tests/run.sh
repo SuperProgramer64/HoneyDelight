@@ -15,3 +15,10 @@ java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.JoinedRegress
 java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.EditorContextRegression
 java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.LocalEditorRegression
 java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.PrivacyRegression
+java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.StartupRegression
+java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.CandidatesRegression
+java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.OptionalModelRegression
+java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.PrivateFieldRegression
+java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.SessionRegression
+java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.SplitBudgetRegression
+java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.CommitRefreshRegression

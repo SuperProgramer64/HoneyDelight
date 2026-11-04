@@ -24,3 +24,17 @@ Antes de publicar: afinar sugerencias bilingües, probar instalación limpia/arr
 ## Licencia
 
 Código original bajo MIT, © 2026 SuperProgramer64. Los componentes externos, el contexto preexistente de los parches y los elementos gráficos derivados de Samsung conservan sus propios derechos; véanse `LICENSE` y `THIRD_PARTY_NOTICES.md`, adjuntos al borrador.
+
+## Revisión de sugerencias y conexión
+
+- Inicio con el directorio del perfil actual y reintentos tras fallos temporales.
+- Actualización del prefijo al cambiar contexto para evitar reutilizar la puntuación de otra frase.
+- Filtro de sugerencias repetidas independiente de su puntuación y ordenación de alternativas.
+- Descarte de respuestas atrasadas al cambiar de palabra/campo.
+- Exclusión temprana de contraseñas y tolerancia a atajos opcionales de emoji dañados.
+- Dieciséis regresiones JVM, ocho separaciones y seis cambios de contexto comprobados; comparación de 28 frases sin datos personales.
+
+- Conservación de separaciones ya comprobadas al agotarse el presupuesto opcional.
+- Revisión final de palabras desconocidas o cortes incompletos al pulsar espacio en Google.
+- Filtro de alternativas pegadas cuando se acepta una separación.
+- La revisión de estos tres ajustes está instalada; su comprobación interactiva final está pendiente.

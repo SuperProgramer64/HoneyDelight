@@ -13,7 +13,7 @@ El ZIP local contiene componentes necesarios para el mod y se conserva fuera del
 
 ## Comprobado
 
-- Nueve grupos JVM del puente, incluida privacidad por defecto.
+- Dieciséis grupos JVM del puente, incluidos privacidad, arranque por perfil y respuestas atrasadas.
 - Resolución de parches por descriptor de clase.
 - Exclusión de historial/token ficticios en el empaquetador.
 - Rechazo de APK/fingerprint incorrectos en la validación.

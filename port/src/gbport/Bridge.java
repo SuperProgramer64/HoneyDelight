@@ -23,7 +23,7 @@ public final class Bridge {
     static final String TAG = "GboardPort";
     // Prueba de vida: si esto sale en logcat, el parche está activo y la clase se cargó dentro del teclado.
     static { Log.i(TAG, "Bridge cargado (parche activo, odex aceptado)"); }
-    static String DIR = "/data/user/0/com.samsung.android.honeyboard/files/gbport";
+    static volatile String DIR; // Se configura desde el servicio del perfil actual, nunca desde el perfil 0.
     static final String[][] LMS = {{"es_us.dict", "es", "US"}, {"en_us.dict", "en", "US"}};
     // Modelo espacial: posición real del dedo de cada letra, pasada al marco del layout del motor con el ajuste por
     // filas (teclas reales de Samsung o, si no llegan, la media de tus propios toques). Sin calibración: centros.
@@ -34,8 +34,11 @@ public final class Bridge {
     // Swipe con el decodificador de gestos de Gboard (si Samsung ya dio las posiciones de las teclas).
     static final boolean SWIPE = true;
 
-    static volatile int state; // 0 sin iniciar, 1 cargando, 2 listo, -1 desactivado
+    static volatile int state; // 0 sin contexto/iniciar, 1 cargando, 2 listo, -1 esperando reintento
+    static volatile long retryAtNanos;
+    static final long RETRY_NANOS = 5_000_000_000L;
     static volatile Object input;
+    static final java.util.concurrent.atomic.AtomicLong inputGeneration = new java.util.concurrent.atomic.AtomicLong();
     // Campo actual (enganche en HoneyBoardService.onStartInput): servicio para leer el texto real del campo,
     // app y tipo de campo para los metadatos de sesión de Gboard.
     static volatile java.lang.ref.WeakReference<android.inputmethodservice.InputMethodService> svc;
@@ -55,7 +58,7 @@ public final class Bridge {
 
     // Llamado al inicio de aj.j.k: impone la decisión de Gboard. 1 = autocorregir, 0 = no, -1 = que decida Samsung.
     public static int decideAutoReplace() {
-        if (state != 2) return -1;
+        if (state != 2 || secret) return -1;
         try {
             String w = composing();
             if (w != null && w.equals(decWord)) {
@@ -77,10 +80,11 @@ public final class Bridge {
     // por detrás (29 % de las veces: la sugerencia de la última letra aún no había llegado al pulsar espacio), se decide
     // ya para la palabra real; se corrige solo si la primera sugerencia de Samsung es nuestra corrección, si no se deja.
     public static int decideAutoReplace(List<?> preds) {
-        if (state != 2) return -1;
+        if (state != 2 || secret) return -1;
         try {
             String w = composing();
             if (w == null || w.isEmpty() || w.equals(decWord)) return decideAutoReplace();
+            final long generation = inputGeneration.get();
             final String before = fieldBefore(w), after = fieldAfter();
             if (before == null || secret) return decideAutoReplace();
             java.util.concurrent.Future<String> fut = ENGINE.submit(() -> {
@@ -99,6 +103,7 @@ public final class Bridge {
             String corr;
             try { corr = fut.get(120, java.util.concurrent.TimeUnit.MILLISECONDS); }
             catch (java.util.concurrent.TimeoutException e) { fut.cancel(false); GLog.w("aplicar: '" + w + "' sin tiempo, se conserva lo tecleado"); return 0; }
+            if (!predictionCurrent(generation, w)) return 0;
             if (corr.isEmpty()) { GLog.w("aplicar: '" + w + "' al momento: se deja"); return 0; }
             Object top = preds == null || preds.isEmpty() ? null : preds.get(0);
             String t = top instanceof Prediction ? ((Prediction) top).getPrediction() : null;
@@ -125,9 +130,10 @@ public final class Bridge {
     // Llamado al inicio de HoneyBoardService.onStartInput: nuevo campo de texto.
     public static void onStartInput(android.inputmethodservice.InputMethodService s, android.view.inputmethod.EditorInfo ei) {
         try {
+            resetInputSession();
             if (ei != null) ei.inputType = inputTypeFor(ei.packageName, ei.inputType);
-            if (s != null && state == 0) DIR = new File(s.getFilesDir(), "gbport").getAbsolutePath();
-            GLog.enabled = new File(DIR, "debug").isFile();
+            if (s != null) configureDirectory(s.getFilesDir());
+            GLog.enabled = DIR != null && new File(DIR, "debug").isFile();
             svc = new java.lang.ref.WeakReference<>(s);
             localEditorText = null;
             if (!Ai.registered && s != null) Ai.register(s.getApplicationContext());
@@ -145,18 +151,21 @@ public final class Bridge {
             pkg = p;
             if (state == 2) {
                 final boolean sr = search, em = email;
+                final long session = inputGeneration.get();
                 lastTypeMs = System.currentTimeMillis();
                 synchronized (pendingLearn) {
                     if (!pendingLearn.isEmpty()) scheduleLearn();
                 }
                 ENGINE.execute(() -> {
+                    if (session != inputGeneration.get()) return;
                     try {
+                        Split.clearCache();
                         Delight.setRuntimeParams(NEXT_WORD, p, sr, em);
                         long now = System.currentTimeMillis();
                         if (now - lastFlush > 5 * 60_000L) { lastFlush = now; Delight.flushPersonal(); }
                     } catch (Throwable e) { Log.e(TAG, "parámetros de sesión", e); }
                 });
-            } else if (state == 0) {
+            } else {
                 start();
             }
             EditCommit.onInput(s, ei);
@@ -300,7 +309,7 @@ public final class Bridge {
                 long t0 = android.os.SystemClock.uptimeMillis();
                 learningNow = true;
                 boolean ok;
-                try { ok = Delight.learn(DIR + "/personal/UserHistory.dict", batch, true); } finally { learningNow = false; }
+                try { ok = Delight.learn(DIR + "/personal/UserHistory.dict", batch, true); if (ok) Split.clearCache(); } finally { learningNow = false; }
                 StringBuilder sb = new StringBuilder();
                 for (String[] b : batch) sb.append(sb.length() == 0 ? "" : ", ").append(b[1]);
                 GLog.w("aprendido(" + ok + ", " + (android.os.SystemClock.uptimeMillis() - t0) + " ms): " + sb);
@@ -566,10 +575,53 @@ public final class Bridge {
         input = o;
     }
 
+    static synchronized void resetInputSession() {
+        inputGeneration.incrementAndGet();
+        input = null;
+        decWord = null;
+        correctionText = null;
+        decResult = 0;
+        localEditorText = null;
+        lastTouch = null;
+        lastLearnKey = "";
+    }
+
+    static boolean predictionCurrent(long generation, String word) {
+        return !secret && generation == inputGeneration.get()
+                && java.util.Objects.equals(word, composing());
+    }
+
+    static synchronized void configureDirectory(File filesDir) {
+        if (filesDir == null || state == 1 || state == 2) return;
+        String directory = new File(filesDir, "gbport").getAbsolutePath();
+        if (directory.equals(DIR)) return;
+        DIR = directory;
+        retryAtNanos = 0;
+        state = 0;
+    }
+
+    static void engineUnavailable() {
+        retryAtNanos = System.nanoTime() + RETRY_NANOS;
+        decWord = null;
+        correctionText = null;
+        decResult = 0;
+        state = -1;
+    }
+
     static void start() {
         synchronized (Bridge.class) {
-            if (state != 0) return;
-            if (!new File(DIR, LMS[0][0]).exists()) { state = -1; Log.w(TAG, "sin diccionarios en " + DIR); return; }
+            if (DIR == null || state == 1 || state == 2
+                    || (state == -1 && System.nanoTime() < retryAtNanos)) return;
+            boolean available = false;
+            for (String[] lm : LMS) {
+                File file = new File(DIR, lm[0]);
+                if (file.isFile() && file.canRead() && file.length() > 0) available = true;
+            }
+            if (!available) {
+                engineUnavailable();
+                Log.w(TAG, "modelos base no disponibles en el perfil; se reintentará");
+                return;
+            }
             state = 1;
         }
         // Arranque en el hilo del motor: todas las llamadas nativas van por el mismo hilo.
@@ -577,6 +629,7 @@ public final class Bridge {
             try {
                 Delight.loadLibrary("integrated_shared_object", DIR + "/crash");
                 Delight.createDecoder(new String[][]{{"es", "US"}, {"en", "US"}}, DIR + "/data");
+                Split.clearCache();
                 Delight.setQwertyLayout();
                 int ok = 0;
                 for (String[] lm : LMS) {
@@ -603,11 +656,12 @@ public final class Bridge {
                 // Parámetros de sesión como los de Gboard (siguiente palabra, app del campo, aprendizaje).
                 Delight.setRuntimeParams(NEXT_WORD, pkg, search, email);
                 GLog.w("personales: " + (perso.isEmpty() ? "ninguno" : perso));
-                state = ok > 0 ? 2 : -1;
+                if (ok > 0) { retryAtNanos = 0; state = 2; }
+                else engineUnavailable();
                 Log.i(TAG, "motor Gboard listo, modelos=" + ok);
             } catch (Throwable e) {
-                state = -1;
-                Log.e(TAG, "no se pudo iniciar el motor Gboard", e);
+                engineUnavailable();
+                Log.e(TAG, "no se pudo iniciar el motor Gboard; se reintentará", e);
             }
         });
     }
@@ -961,6 +1015,15 @@ public final class Bridge {
         return correction + " ";
     }
 
+    static boolean needsCommitRefresh(String word) {
+        if (state != 2 || secret || word == null || word.isEmpty()) return false;
+        if (!word.equals(decWord)) return true;
+        if (decResult == 1 && correctionText != null && correctionText.contains(" ")) return false;
+        Double literal = litSeen.get(word);
+        boolean uncertain = literal == null || literal.isNaN() || literal < Split.TRY_BELOW;
+        return uncertain && word.length() >= 3 && (decResult == 0 || word.length() >= 6);
+    }
+
     public static void beforeGoogleCommit(CharSequence text) {
         if (!" ".contentEquals(text == null ? "" : text) || secret
                 || !"com.google.android.googlequicksearchbox".equals(pkg)) return;
@@ -975,22 +1038,25 @@ public final class Bridge {
             String word = null;
             while (words.find()) if (words.end() == snapshot.length()) word = words.group();
             if (word == null || word.length() > 64 || !Delight.typeable(word)) return;
-            String correction;
-            if (word.equals(decWord)) {
-                correction = decResult == 1 ? correctionText : null;
-            } else {
+            final long generation = inputGeneration.get();
+            String correction = word.equals(decWord) && decResult == 1 ? correctionText : null;
+            if (needsCommitRefresh(word)) {
                 final String completeWord = word;
                 final EditorContext fields = captureContext(null, completeWord);
                 final long deadline = System.nanoTime() + 90_000_000L;
-                java.util.concurrent.Future<Out> decision = ENGINE.submit(() ->
-                        compute(null, null, completeWord, false, deadline, null, fields));
-                try { correction = decision.get(120, java.util.concurrent.TimeUnit.MILLISECONDS).correction; }
-                catch (java.util.concurrent.TimeoutException e) {
+                java.util.concurrent.Future<Out> decision = ENGINE.submit(() -> {
+                    if (generation != inputGeneration.get() || secret) return new Out();
+                    return compute(null, null, completeWord, false, deadline, null, fields);
+                });
+                try {
+                    Out finalDecision = decision.get(120, java.util.concurrent.TimeUnit.MILLISECONDS);
+                    if (finalDecision.correction != null) correction = finalDecision.correction;
+                } catch (java.util.concurrent.TimeoutException e) {
                     decision.cancel(false);
-                    GLog.w("Google: palabra completa sin decisión a tiempo");
-                    return;
+                    GLog.w("Google: decisión final sin tiempo; se conserva la corrección comprobada");
                 }
             }
+            if (generation != inputGeneration.get() || secret) return;
             if (correction == null || correctedSearchTail(snapshot + " ", word, correction) == null) return;
             CharSequence unchanged = connection.getTextBeforeCursor(CTX_BEFORE, 0);
             if (unchanged == null || !snapshot.contentEquals(unchanged)) return;
@@ -1144,11 +1210,13 @@ public final class Bridge {
 
     public static Predictions getPredictions(Predictor p, Sequence ctx, TouchHistory th, ResultsFilter f) {
         final long requestedAt = System.nanoTime();
+        if (secret) return p.getPredictions(ctx, th, f);
+        final long generation = inputGeneration.get();
         String current = composing();
         Predictions fl = delightOwns(current) ? neutralPredictions(current) : p.getPredictions(ctx, th, f);
         lastTypeMs = System.currentTimeMillis();
         if (state != 2) {
-            if (state == 0) start();
+            start();
             return fl;
         }
         // Motor ocupado: no se encola nada; se conserva la entrada neutral en campos de Delight.
@@ -1180,7 +1248,10 @@ public final class Bridge {
             // Plazo para el trabajo opcional (corte de palabras pegadas): lo que sobre del presupuesto de quien espera.
             final long deadline = System.nanoTime() + ((ui ? UI_BUDGET_MS : BG_BUDGET_MS) - 25) * 1_000_000L;
             fut = ENGINE.submit(() -> {
-                try { return compute(f, fl, word, swipeNow, deadline, touch, fields); }
+                try {
+                    if (generation != inputGeneration.get() || secret) return new Out();
+                    return compute(f, fl, word, swipeNow, deadline, touch, fields);
+                }
                 finally { busy.set(false); }
             });
         } catch (Throwable e) {
@@ -1190,13 +1261,16 @@ public final class Bridge {
         }
         try {
             Out o = fut.get(ui ? UI_BUDGET_MS : BG_BUDGET_MS, java.util.concurrent.TimeUnit.MILLISECONDS);
-            decWord = o.dw;
-            decResult = o.dr;
-            correctionText = o.correction;
-            if (o.emojis != null) {
-                putEmojis(o.emojis);
-                lastEmojis = o.emojis;
-                lastEmojisAt = android.os.SystemClock.uptimeMillis();
+            synchronized (Bridge.class) {
+                if (!predictionCurrent(generation, word)) return neutralPredictions(composing());
+                decWord = o.dw;
+                decResult = o.dr;
+                correctionText = o.correction;
+                if (o.emojis != null) {
+                    putEmojis(o.emojis);
+                    lastEmojis = o.emojis;
+                    lastEmojisAt = android.os.SystemClock.uptimeMillis();
+                }
             }
             if ("com.samsung.android.honeyboard".equals(pkg)) {
                 long ms = (System.nanoTime() - requestedAt) / 1_000_000L;
@@ -1235,7 +1309,7 @@ public final class Bridge {
             String before = fields.before;
             List<Delight.Cand> cs = Delight.parseCands(Delight.suggestEchoRaw(before, fields.after, word, Math.max(20, total + 6),
                     touch == null ? null : touch[0], touch == null ? null : touch[1], null));
-            cs.removeIf(c -> c.score < -25 && Decide.repeatedExpansion(word, c.text));
+            cs = Decide.rankCandidates(cs, word);
 
 
             Decide.Result dec = Decide.decide(cs, word, false);
@@ -1329,8 +1403,7 @@ public final class Bridge {
             double max = Double.NEGATIVE_INFINITY;
             for (Delight.Cand c : cs) if (c.type != 3 && !Float.isNaN(c.score)) max = Math.max(max, c.score);
             for (Delight.Cand c : cs) {
-                if (doCorrect && corrText.contains(" ") && !c.text.contains(" ")
-                        && Decide.norm(c.text).startsWith(Decide.norm(word))) continue;
+                if (!Decide.displayAlternative(word, doCorrect ? corrText : null, c.text)) continue;
                 if (c.type == 3 || Float.isNaN(c.score) || !seen.add(c.text.toLowerCase())) continue;
                 out.add(new Prediction(c.text, 0.25 * Math.exp(c.score - max)));
                 if (out.size() >= total + 2 + emojis) break;
@@ -1339,7 +1412,7 @@ public final class Bridge {
             return o;
         } catch (Throwable e) {
             Log.e(TAG, "fallo del motor Gboard, vuelvo a Fluency", e);
-            state = -1;
+            engineUnavailable();
             return o;
         }
     }

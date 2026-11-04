@@ -117,6 +117,31 @@ public final class Decide {
         return e;
     }
 
+    public static boolean displayAlternative(String word, String correction, String candidate) {
+        if (correction == null) return true;
+        String trimmed = correction.trim();
+        boolean separated = trimmed.contains(" ") && norm(trimmed.replace(" ", "")).equals(norm(word));
+        // Si ya se aceptó el corte, las variantes sin ese límite no deben ocupar la barra.
+        return !separated || candidate.contains(" ");
+    }
+
+    static boolean usableCandidate(Delight.Cand c, String word) {
+        if (c == null || c.text == null || c.text.trim().isEmpty()
+                || repeatedExpansion(word, c.text)) return false;
+        return Float.isFinite(c.score) || (Float.isNaN(c.score)
+                && (c.type == 3 || c.text.equals(word)));
+    }
+
+    // La barra ordena alternativas por puntuación y descarta bucles incluso si un modelo les da peso alto.
+    public static List<Delight.Cand> rankCandidates(List<Delight.Cand> candidates, String word) {
+        List<Delight.Cand> ranked = new java.util.ArrayList<>();
+        for (Delight.Cand c : candidates) if (usableCandidate(c, word)) ranked.add(c);
+        ranked.sort((a, b) -> Float.compare(
+                Float.isNaN(b.score) ? Float.NEGATIVE_INFINITY : b.score,
+                Float.isNaN(a.score) ? Float.NEGATIVE_INFINITY : a.score));
+        return ranked;
+    }
+
     // ¿A un fallo de tecla? Una sustitución, inserción, borrado o dos letras cambiadas de sitio (bein/bien).
     static boolean oneEdit(String a, String b) {
         int la = a.length(), lb = b.length();
@@ -142,6 +167,7 @@ public final class Decide {
         Delight.Cand best = null;
         double bestScore = Double.NEGATIVE_INFINITY;
         for (Delight.Cand c : cs) {
+            if (!usableCandidate(c, word)) continue;
             if (c.text.equals(word)) {
                 if (!Float.isNaN(c.score) && (Double.isNaN(lit) || c.score > lit)) lit = c.score;
                 continue;

@@ -43,6 +43,10 @@ public final class Delight {
     }
 
     public static void createDecoder(String[][] langs, String dataDir) {
+        ctxVersion = 0;
+        decodeState = 0;
+        echoBefore = null;
+        echoAfter = null;
         Pb params = Pb.n();
         for (String[] l : langs) params.m(1, langParams(l[0], l[1]));
         params.s(3, dataDir);
@@ -135,25 +139,30 @@ public final class Delight {
         for (String[] fl : files) {
             File f = new File(fl[0]);
             if (!f.exists()) continue;
-            byte[] data;
-            try { data = java.nio.file.Files.readAllBytes(f.toPath()); } catch (Exception e) { continue; }
-            Pb lj = Pb.n();
-            java.util.Map<String, Integer> perKey = new java.util.HashMap<>();
-            for (Pb.F af : Pb.all(Pb.parse(data), 1)) {
-                java.util.List<Pb.F> ff = Pb.parse(af.d);
-                Pb.F em = Pb.one(ff, 1), fl3 = Pb.one(ff, 3);
-                if (em == null) continue;
-                boolean flag = fl3 != null && fl3.v != 0;
-                for (Pb.F k : Pb.all(ff, 2)) {
-                    String key = k.str().toLowerCase(java.util.Locale.ROOT);
-                    int c = perKey.getOrDefault(key, 0);
-                    if (c >= 5) continue;                       // como lxx.p: pocas por clave
-                    perKey.put(key, c + 1);
-                    lj.s(1, key).s(2, em.str()).b(3, true).b(4, flag);
-                    total++;
+            try {
+                byte[] data = java.nio.file.Files.readAllBytes(f.toPath());
+                int fileTotal = 0;
+                Pb lj = Pb.n();
+                java.util.Map<String, Integer> perKey = new java.util.HashMap<>();
+                for (Pb.F af : Pb.all(Pb.parse(data), 1)) {
+                    java.util.List<Pb.F> ff = Pb.parse(af.d);
+                    Pb.F em = Pb.one(ff, 1), fl3 = Pb.one(ff, 3);
+                    if (em == null) continue;
+                    boolean flag = fl3 != null && fl3.v != 0;
+                    for (Pb.F k : Pb.all(ff, 2)) {
+                        String key = k.str().toLowerCase(java.util.Locale.ROOT);
+                        int c = perKey.getOrDefault(key, 0);
+                        if (c >= 5) continue;                       // como lxx.p: pocas por clave
+                        perKey.put(key, c + 1);
+                        lj.s(1, key).s(2, em.str()).b(3, true).b(4, flag);
+                        fileTotal++;
+                    }
                 }
+                ll.m(1, lj).s(2, fl[1]);
+                total += fileTotal;
+            } catch (RuntimeException | java.io.IOException e) {
+                // Un recurso opcional dañado no debe impedir cargar los idiomas principales.
             }
-            ll.m(1, lj).s(2, fl[1]);
         }
         if (total == 0) return 0;
         boolean ok = Decoder.loadEmojiShortcutMapNative(Pb.n().m(1, ll).i(2, System.currentTimeMillis()).bytes());
@@ -175,13 +184,20 @@ public final class Delight {
     }
 
     // awzf.c (campo 2.1 de la respuesta) trae la versión de contexto del decodificador.
-    static byte[] track(byte[] r) {
-        Pb.F st = Pb.one(Pb.parse(r), 2);
+    static byte[] track(byte[] r) { return track(r, 2); }
+
+    static byte[] track(byte[] r, int stateField) {
+        Pb.F st = Pb.one(Pb.parse(r), stateField);
         if (st != null) {
             Pb.F v = Pb.one(Pb.parse(st.d), 1);
             if (v != null) ctxVersion = (int) v.v;
         }
         return r;
+    }
+
+    // abortComposing responde awyf{1 awzf}; decode/onKeyPress responden con awzf en el campo 2.
+    static byte[] abortComposing(long id) {
+        return track(Decoder.abortComposingNative(Pb.n().m(1, meta(id)).i(2, id).bytes()), 1);
     }
 
     // Candidato de Gboard: texto, tipo (1 = lo tecleado), puntuación total (campo 4 = 5 + 6), coste espacial
@@ -262,7 +278,7 @@ public final class Delight {
 
     public static synchronized java.util.List<Cand> suggest(String before, String after, String word, int n) {
         long id = ++reqId;
-        track(Decoder.abortComposingNative(Pb.n().m(1, meta(id)).i(2, id).bytes()));
+        abortComposing(id);
         setContext(before, "", after, 0);
         for (int i = 0; i < word.length(); i++) {
             char c = word.charAt(i);
@@ -279,7 +295,7 @@ public final class Delight {
     // y manda el espacio; devuelve {lo que el motor confirma (axfs.3), su respuesta}. El motor decide la corrección.
     public static synchronized String[] typeAndSpace(String before, String word, boolean decodeFirst, float[] xs, float[] ys) {
         long id = ++reqId;
-        track(Decoder.abortComposingNative(Pb.n().m(1, meta(id)).i(2, id).bytes()));
+        abortComposing(id);
         setContext(before, "", "", 0);
         for (int i = 0; i < word.length(); i++) {
             char c = word.charAt(i);
@@ -305,7 +321,7 @@ public final class Delight {
     // Teclea sin eco y devuelve, por prefijo, la puntuación del literal que trae cada respuesta de onKeyPress (NaN si no).
     public static synchronized float[] prefixScores(String before, String word) {
         long id = ++reqId;
-        track(Decoder.abortComposingNative(Pb.n().m(1, meta(id)).i(2, id).bytes()));
+        abortComposing(id);
         setContext(before, "", "", 0);
         float[] out = new float[word.length()];
         for (int i = 0; i < word.length(); i++) {
@@ -327,7 +343,7 @@ public final class Delight {
     // con la posición real del dedo, no con el centro de la tecla.
     public static synchronized java.util.List<Cand> suggestXY(String before, String word, int n, float[] x, float[] y) {
         long id = ++reqId;
-        track(Decoder.abortComposingNative(Pb.n().m(1, meta(id)).i(2, id).bytes()));
+        abortComposing(id);
         setContext(before, "", "", 0);
         for (int i = 0; i < word.length(); i++) keyPress(word.charAt(i), x[i], y[i]);
         return parseCands(decode(n));
@@ -337,7 +353,7 @@ public final class Delight {
     // luego decodifica sin palabra en curso, igual que el fetchSuggestions de Gboard tras pulsar espacio.
     public static synchronized byte[] typeThenDecodeRaw(String text, int n) {
         long id = ++reqId;
-        track(Decoder.abortComposingNative(Pb.n().m(1, meta(id)).i(2, id).bytes()));
+        abortComposing(id);
         setContext("", "", "", 0);
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
@@ -354,7 +370,7 @@ public final class Delight {
     // en cada onKeyPress; decode puede devolver solo "sin cambios"). [0] = última pulsación, [1] = decode.
     public static synchronized byte[][] suggestBothRaw(String before, String word, int n) {
         long id = ++reqId;
-        track(Decoder.abortComposingNative(Pb.n().m(1, meta(id)).i(2, id).bytes()));
+        abortComposing(id);
         setContext(before, "", "", 0);
         byte[] last = new byte[0];
         for (int i = 0; i < word.length(); i++) {
@@ -372,7 +388,7 @@ public final class Delight {
     public static synchronized java.util.List<String> trace(String before, String word, int n) {
         java.util.List<String> out = new java.util.ArrayList<>();
         long id = ++reqId;
-        byte[] r = track(Decoder.abortComposingNative(Pb.n().m(1, meta(id)).i(2, id).bytes()));
+        byte[] r = abortComposing(id);
         out.add("abort -> v=" + ctxVersion + " " + Pb.dump(r, "").replace("\n", " "));
         r = setContext(before, "", "", 0);
         out.add("ctx[" + before + "] -> v=" + ctxVersion + " " + Pb.dump(r, "").replace("\n", " "));
@@ -396,7 +412,7 @@ public final class Delight {
     // Igual que suggest pero devuelve la respuesta cruda (para depurar).
     public static synchronized byte[] suggestRaw(String before, String word, int n) {
         long id = ++reqId;
-        track(Decoder.abortComposingNative(Pb.n().m(1, meta(id)).i(2, id).bytes()));
+        abortComposing(id);
         setContext(before, "", "", 0);
         for (int i = 0; i < word.length(); i++) {
             char c = word.charAt(i);
@@ -471,6 +487,7 @@ public final class Delight {
     // echoType = tipo del span axao (0, 5 o 6; -1 = sin span; -2 = sin eco); echoReason = motivo (0 funciona).
     public static int echoType = -1, echoReason = 0;
     public static boolean echoSkipLast = false;
+    static String echoBefore, echoAfter;
 
     // Contexto con spans: axdn.11 = repeated axao{1 inicio, 2 fin (puntos de código), 3 tipo, 4 texto}.
     static byte[] setContextSpan(String before, String after, int spanStart, int spanEnd, int type, String spanText, int reason) {
@@ -502,8 +519,9 @@ public final class Delight {
     public static synchronized byte[] suggestEchoRaw(String before, String after, String word, int n,
                                                      float[] xs, float[] ys, float[] prefixLit) {
         long id = ++reqId;
-        track(Decoder.abortComposingNative(Pb.n().m(1, meta(id)).i(2, id).bytes()));
+        abortComposing(id);
         setContext(before, "", after, 0);
+        boolean changedContext = !before.equals(echoBefore) || !after.equals(echoAfter);
         String committed = before, composing = "";
         for (int i = 0; i < word.length(); i++) {
             char c = word.charAt(i);
@@ -532,8 +550,14 @@ public final class Delight {
                 int s = committed.codePointCount(0, committed.length());
                 setContextSpan(committed + composing, after, s, s + composing.codePointCount(0, composing.length()), echoType, composing, echoReason);
             }
+            // Con otro contexto, actualizar el primer prefijo como en el tecleo incremental de Gboard.
+            // Si solo se decodifica la palabra final, Delight puede reutilizar su puntuación del contexto anterior.
+            if (changedContext && i == 0 && word.length() > 1) decode(n);
         }
-        return decode(n);
+        byte[] result = decode(n);
+        echoBefore = before;
+        echoAfter = after;
+        return result;
     }
 
     // Variante de construcción del contexto (experimento I+D; 0 = la de siempre).
@@ -579,7 +603,7 @@ public final class Delight {
         long id;
         if (start) {
             id = ++reqId;
-            track(Decoder.abortComposingNative(Pb.n().m(1, meta(id)).i(2, id).bytes()));
+            abortComposing(id);
             setContext(before, "", after, 0);
         }
         Pb trace = Pb.n();
@@ -595,7 +619,7 @@ public final class Delight {
 
     public static synchronized byte[] decodeGestureRaw(String before, String after, float[] x, float[] y, long[] t, int n) {
         long id = ++reqId;
-        track(Decoder.abortComposingNative(Pb.n().m(1, meta(id)).i(2, id).bytes()));
+        abortComposing(id);
         setContext(before, "", after, 0);
         Pb trace = Pb.n();
         for (int i = 0; i < x.length; i++) {

@@ -85,7 +85,7 @@ El repositorio permanece **privado durante la preparación**. El actualizador co
 
 ## Pruebas con evidencia
 
-La revisión estable pasó **ocho grupos de regresión local**. La preparación de release añade una novena prueba de privacidad, pruebas del empaquetador y pruebas de selección y verificación de actualizaciones. También se comprobaron ocho casos de separación en el motor nativo del teléfono y se conservaron los resultados de una referencia de 26 frases de contexto.
+La revisión actual pasa **dieciséis grupos de regresión local**, incluidos arranque por perfil, privacidad, resultados atrasados y filtrado de candidatos. La preparación de release incluye pruebas del empaquetador y pruebas de selección y verificación de actualizaciones. También se comprobaron ocho casos de separación en el motor nativo del teléfono y se conservaron los resultados de una referencia de 26 frases de contexto.
 
 El ajuste del editor se comprobó con trazas de los hilos: una espera circular de Samsung podía detener una pulsación alrededor de 500 ms. Después del cambio, el usuario confirmó una escritura más fluida en ambos campos del editor.
 

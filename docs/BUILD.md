@@ -19,7 +19,7 @@ python3 scripts/tests/test_module.py
 bash manager/tests/run.sh
 ```
 
-Los nueve grupos JVM no cargan el motor nativo. Las pruebas del empaquetador trabajan con datos ficticios. La herramienta de instalación tiene además una prueba JVM de CRC en `module-tools/tests/test_crc.py`. La plantilla de CI está en `docs/ci-tests.yml.example` y puede activarse más adelante desde GitHub.
+Los dieciséis grupos JVM no cargan el motor nativo. Las pruebas del empaquetador trabajan con datos ficticios. La herramienta de instalación tiene además una prueba JVM de CRC en `module-tools/tests/test_crc.py`. La plantilla de CI está en `docs/ci-tests.yml.example` y puede activarse más adelante desde GitHub.
 
 ## Generar un módulo para el dispositivo
 

@@ -38,6 +38,12 @@ public final class Split {
     static final Map<String, Result> splits = new HashMap<>();      // prefijo -> mejor corte (o ausente)
     static final Map<String, Object[]> rights = new HashMap<>();     // "izq|der" -> {forma, puntuación}
 
+    static synchronized void clearCache() {
+        ctxKey = "";
+        afterKey = "";
+        lit.clear(); splits.clear(); rights.clear();
+    }
+
     static synchronized void reset(String before) {
         if (before.equals(ctxKey) && lit.size() < 256 && rights.size() < 512) return;
         ctxKey = before;
@@ -110,7 +116,7 @@ public final class Split {
             if (sp != null) opts.add(new Object[]{i, sp.text, sp.score});
         }
         opts.sort((a, b) -> Double.compare((Double) b[2], (Double) a[2]));
-        Result best = null;
+        Result best = splits.get(w); // Un plazo agotado no invalida un corte ya comprobado con este contexto.
         int done = 0;
         for (Object[] o : opts) {
             if (done >= MAX_RIGHTS || System.nanoTime() > deadlineNanos) break;
