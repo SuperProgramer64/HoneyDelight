@@ -88,6 +88,12 @@ public final class Split {
             afterKey = after;
         }
         if (w.length() < 3 || w.length() > 24) return null;
+        String common = CommonBoundaries.find(before, after, w);
+        if (common != null) {
+            Result result = new Result(common, -4.0);
+            splits.put(w, result);
+            return result;
+        }
         Object[] whole = lit.get(w);
         if (whole != null && (Double) whole[1] >= TRY_BELOW) return null;
         // Recover missing prefixes when Samsung delivered several letters at once.

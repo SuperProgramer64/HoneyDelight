@@ -39,3 +39,13 @@ La revisión se instaló mediante los montajes de desarrollo, conservando una co
 La comprobación inicial en Google detectó dos fallos interactivos (`erroes` y `buenosdias`) que el arnés aislado no mostraba. Una repetición confirmó tanto el resultado pegado `buenosdías` como el resultado separado `buenos días`; no se considera solucionado solo por esa repetición. Se añadieron pruebas que reproducen la pérdida de un corte válido cuando expira el presupuesto y la reutilización de decisiones incompletas al pulsar espacio. Ambas pasan con la revisión instalada más reciente. La comprobación interactiva final queda pendiente.
 
 Cuando un corte ha sido aceptado, la barra omite alternativas pegadas que contrarían ese corte. Esto evita mostrar `Buenosdigas` o `buenosdirás` junto a una separación validada, sin aplicar el filtro a completaciones normales ni al espacio de puntuación.
+
+## Expresiones frecuentes y prueba de la barra
+
+La prueba inicial en Google corrigió cinco de seis combinaciones en la barra y al pulsar espacio: `buenasnoches`, `buenastardes`, `tequiero`, `porfavor`, `buenosdias`. `hastamanana` quedó pegada. Una revisión experimental de prioridad de cortes empeoró la barra y fue retirada; no forma parte de este árbol.
+
+Se añadió una tabla local de 16 expresiones frecuentes en `CommonBoundaries.java`, independiente del presupuesto de llamadas nativas. Conserva mayúsculas y tildes; omite nombres con mayúsculas internas, direcciones y correos. El filtro de palabra válida de `Split.wins` se conserva. Las demás expresiones usan el separador general del motor.
+
+Pasaron 17 grupos JVM. La nueva regresión nativa de la ruta completa pasó 80/80 casos (20 entradas, dos repeticiones y dos variantes de coordenadas), con diccionarios base y sin datos personales. Una comparación adicional de 84 casos obtuvo 82 resultados esperados: los dos fallos fueron `erroes → errors` con coordenadas simuladas. El problema bilingüe sigue pendiente. Estas muestras no acreditan una cifra global de precisión.
+
+Esta revisión se instala por los montajes de desarrollo y queda pendiente de la última comprobación visual en Google. La posición a la izquierda cuando solo hay una sugerencia sigue siendo el diseño nativo de Samsung; no se modifica el orden de autocorrección para forzar un centrado.

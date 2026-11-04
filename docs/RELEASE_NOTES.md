@@ -32,9 +32,15 @@ Código original bajo MIT, © 2026 SuperProgramer64. Los componentes externos, e
 - Filtro de sugerencias repetidas independiente de su puntuación y ordenación de alternativas.
 - Descarte de respuestas atrasadas al cambiar de palabra/campo.
 - Exclusión temprana de contraseñas y tolerancia a atajos opcionales de emoji dañados.
-- Dieciséis regresiones JVM, ocho separaciones y seis cambios de contexto comprobados; comparación de 28 frases sin datos personales.
+- Diecisiete regresiones JVM, ocho separaciones y seis cambios de contexto comprobados; comparación de 28 frases sin datos personales.
 
 - Conservación de separaciones ya comprobadas al agotarse el presupuesto opcional.
 - Revisión final de palabras desconocidas o cortes incompletos al pulsar espacio en Google.
 - Filtro de alternativas pegadas cuando se acepta una separación.
 - La revisión de estos tres ajustes está instalada; su comprobación interactiva final está pendiente.
+
+## Expresiones frecuentes
+
+Tabla local de 16 expresiones: saludos, despedidas y fórmulas frecuentes. Mantiene el separador general para los demás casos. La revisión de prioridad de cortes que empeoró la barra fue retirada.
+
+Diecisiete grupos JVM y 80/80 casos en la nueva regresión nativa. La comparación ampliada de 84 casos deja dos errores bilingües documentados (`erroes → errors` con coordenadas simuladas). La comprobación final de la barra instalada en Google está en curso.

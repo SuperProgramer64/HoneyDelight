@@ -19,7 +19,7 @@ python3 scripts/tests/test_module.py
 bash manager/tests/run.sh
 ```
 
-Los dieciséis grupos JVM no cargan el motor nativo. Las pruebas del empaquetador trabajan con datos ficticios. La herramienta de instalación tiene además una prueba JVM de CRC en `module-tools/tests/test_crc.py`. La plantilla de CI está en `docs/ci-tests.yml.example` y puede activarse más adelante desde GitHub.
+Los diecisiete grupos JVM no cargan el motor nativo. Las pruebas del empaquetador trabajan con datos ficticios. La herramienta de instalación tiene además una prueba JVM de CRC en `module-tools/tests/test_crc.py`. La plantilla de CI está en `docs/ci-tests.yml.example` y puede activarse más adelante desde GitHub.
 
 ## Generar un módulo para el dispositivo
 
@@ -49,3 +49,13 @@ bash manager/build.sh
 La clave debe permanecer fuera del repositorio. Conserva la misma firma y aumenta versionCode para futuras actualizaciones. La APK se genera en `manager/build/` y no contiene componentes nativos del teclado ni modelos aprendidos.
 
 La app declara Internet, estado de red, notificaciones y recepción de arranque para su tarea programada. No solicita root ni acceso a contactos o almacenamiento general.
+
+## Regresión nativa de sugerencias
+
+```sh
+export ANDROID_SERIAL=identificador-de-tu-dispositivo
+export BASE_COMPONENTS_DIR=/ruta/a/componentes-base-locales
+bash scripts/test-native-predictions.sh
+```
+
+Usa solo los tres componentes base fijados por hash. Ejecuta la ruta completa de cálculo con contenedores de prueba de Samsung y el motor Delight real; no instala el teclado, no abre apps ni consulta datos aprendidos. Incluye palabras pegadas, formas válidas, nombres y dos variantes de coordenadas. Es una regresión del cálculo; la barra visual y la confirmación con espacio requieren comprobación aparte.

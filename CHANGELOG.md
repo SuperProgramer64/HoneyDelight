@@ -13,3 +13,7 @@ Módulo ZIP como entrega principal, APK opcional de avisos/descarga, comprobaci�
 ### Conexión y predicción
 
 Arranque por perfil con reintentos, corrección del contexto reutilizado al consultar la misma palabra en frases distintas, filtro de repeticiones sin depender de la puntuación, ordenación de alternativas, rechazo de resultados atrasados y salida temprana de campos privados. Recursos opcionales de emoji dañados dejan de interrumpir la carga de los idiomas base.
+
+### Separación de expresiones frecuentes
+
+Tabla local de 16 expresiones frecuentes para que su separación y tilde no dependan del presupuesto opcional de la búsqueda. Comprobaciones de nombres, enlaces y correos. Regresión nativa de la ruta completa con componentes base verificables y sin datos personales; las herramientas de prueba quedan fuera del DEX de producción.

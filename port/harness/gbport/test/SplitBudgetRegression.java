@@ -8,10 +8,10 @@ public final class SplitBudgetRegression {
   field("ctxKey").set(null,"fixture context ");field("afterKey").set(null,"");
   Constructor<Split.Result> ctor=Split.Result.class.getDeclaredConstructor(String.class,double.class);ctor.setAccessible(true);
   Map<String,Split.Result> results=(Map<String,Split.Result>)field("splits").get(null);
-  results.put("buenosdias",ctor.newInstance("buenos días",-10.0));
-  Split.Result kept=Split.update("fixture context ","","buenosdias",System.nanoTime()-1);
-  if(kept==null||!"buenos días".equals(kept.text))throw new AssertionError("An expired optional budget erased a valid separation from the same context");
-  Split.Result changed=Split.update("another context ","","buenosdias",System.nanoTime()-1);
+  results.put("gustamucho",ctor.newInstance("gusta mucho",-10.0));
+  Split.Result kept=Split.update("fixture context ","","gustamucho",System.nanoTime()-1);
+  if(kept==null||!"gusta mucho".equals(kept.text))throw new AssertionError("An expired optional budget erased a valid separation from the same context");
+  Split.Result changed=Split.update("another context ","","gustamucho",System.nanoTime()-1);
   if(changed!=null)throw new AssertionError("A separation from an old context was reused");
   System.out.println("PASS optional deadline preserves a valid split and a new context invalidates it");
  }

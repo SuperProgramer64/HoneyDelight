@@ -30,7 +30,7 @@ No es una recreación completa de Gboard ni una promesa de precisión perfecta. 
 | Área | Lo que aporta HoneyDelight |
 | :--- | :--- |
 | **Predicción** | Candidatos de Delight5 con contexto, reglas de corrección y geometría de las teclas. |
-| **Palabras pegadas** | Recupera separaciones y filtra expansiones repetidas del decodificador. |
+| **Palabras pegadas** | Combina separación por el motor con 16 expresiones frecuentes resueltas localmente y filtra expansiones repetidas. |
 | **Toques y gestos** | Pasa posiciones del dedo al motor y conecta la decodificación de deslizamientos. |
 | **Aprendizaje** | Usa historial local y filtros para evitar aprender algunas erratas y texto pegado como escritura propia. |
 | **Campos difíciles** | Habilita corrección en campos de Google que la desactivaban, sin extender esa excepción a las barras de direcciones de navegadores. |
@@ -85,7 +85,7 @@ El repositorio permanece **privado durante la preparación**. El actualizador co
 
 ## Pruebas con evidencia
 
-La revisión actual pasa **dieciséis grupos de regresión local**, incluidos arranque por perfil, privacidad, resultados atrasados y filtrado de candidatos. La preparación de release incluye pruebas del empaquetador y pruebas de selección y verificación de actualizaciones. También se comprobaron ocho casos de separación en el motor nativo del teléfono y se conservaron los resultados de una referencia de 26 frases de contexto.
+La revisión actual pasa **diecisiete grupos de regresión local**, incluidos arranque por perfil, privacidad, resultados atrasados y filtrado de candidatos. La preparación de release incluye pruebas del empaquetador y pruebas de selección y verificación de actualizaciones. También se comprobaron ocho casos de separación en el motor nativo del teléfono y se conservaron los resultados de una referencia de 26 frases de contexto.
 
 El ajuste del editor se comprobó con trazas de los hilos: una espera circular de Samsung podía detener una pulsación alrededor de 500 ms. Después del cambio, el usuario confirmó una escritura más fluida en ambos campos del editor.
 

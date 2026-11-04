@@ -4,6 +4,7 @@ PROJECT=$(cd "$(dirname "$0")/../.." && pwd)
 cd "$PROJECT"
 source scripts/env.sh
 bash port/build.sh
+rm -rf work/port-tests
 mkdir -p work/port-tests
 javac -d work/port-tests port/tests/android/util/Log.java
 java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.TouchRegression
@@ -22,3 +23,4 @@ java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.PrivateFieldR
 java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.SessionRegression
 java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.SplitBudgetRegression
 java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.CommitRefreshRegression
+java -cp "work/port-tests:port/build/cls:$ANDROID_JAR" gbport.test.CommonBoundaryRegression
