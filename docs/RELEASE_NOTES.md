@@ -43,4 +43,6 @@ Código original bajo MIT, © 2026 SuperProgramer64. Los componentes externos, e
 
 Tabla local de 16 expresiones: saludos, despedidas y fórmulas frecuentes. Mantiene el separador general para los demás casos. La revisión de prioridad de cortes que empeoró la barra fue retirada.
 
-Diecisiete grupos JVM y 80/80 casos en la nueva regresión nativa. La comparación ampliada de 84 casos deja dos errores bilingües documentados (`erroes → errors` con coordenadas simuladas). La comprobación final de la barra instalada en Google está en curso.
+Diecisiete grupos JVM y 80/80 casos en la nueva regresión nativa. La comparación ampliada de 84 casos deja dos errores bilingües documentados (`erroes → errors` con coordenadas simuladas). La comprobación en Google pasó seis combinaciones tanto en la barra como al pulsar espacio, incluida `hastamanana → hasta mañana`.
+
+Los controles adicionales en Google confirmaron `gustamucho → gusta mucho`, `programacion → programación` y la conservación de `cocodrilo`. `holacomo` todavía puede quedar como `holacómo`; es un fallo abierto del separador general.

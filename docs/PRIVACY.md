@@ -4,7 +4,7 @@
 
 No se incluyen historiales entrenados, contactos, correos, coordenadas del dedo, diccionarios personales, instrucciones guardadas, logs del usuario, conversaciones, tokens, claves de firma ni fuentes tipográficas del dispositivo.
 
-El empaquetador usa una lista explícita de cinco archivos de carga. Los tres componentes base de Gboard tienen hashes fijados para impedir sustituirlos accidentalmente por un modelo personal. Los otros archivos de la carpeta de entrada no se leen ni se copian al ZIP. Una prueba introduce un historial y un token ficticios y verifica su ausencia en el resultado.
+El empaquetador usa una lista explícita de cuatro archivos de carga. Los tres componentes base de Gboard tienen hashes fijados para impedir sustituirlos accidentalmente por un modelo personal. Los otros archivos de la carpeta de entrada no se leen ni se copian al ZIP. Una prueba introduce un historial y un token ficticios y verifica su ausencia en el resultado.
 
 ## Aprendizaje del teclado
 

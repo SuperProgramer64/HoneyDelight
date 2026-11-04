@@ -48,4 +48,8 @@ Se añadió una tabla local de 16 expresiones frecuentes en `CommonBoundaries.ja
 
 Pasaron 17 grupos JVM. La nueva regresión nativa de la ruta completa pasó 80/80 casos (20 entradas, dos repeticiones y dos variantes de coordenadas), con diccionarios base y sin datos personales. Una comparación adicional de 84 casos obtuvo 82 resultados esperados: los dos fallos fueron `erroes → errors` con coordenadas simuladas. El problema bilingüe sigue pendiente. Estas muestras no acreditan una cifra global de precisión.
 
-Esta revisión se instala por los montajes de desarrollo y queda pendiente de la última comprobación visual en Google. La posición a la izquierda cuando solo hay una sugerencia sigue siendo el diseño nativo de Samsung; no se modifica el orden de autocorrección para forzar un centrado.
+Esta revisión se instaló por los montajes de desarrollo. En Google, las seis combinaciones `buenasnoches`, `buenastardes`, `tequiero`, `porfavor`, `hastamanana` y `buenosdias` mostraron el límite entre palabras en la barra y se confirmaron separadas al pulsar espacio. La posición a la izquierda cuando solo hay una sugerencia sigue siendo el diseño nativo de Samsung; no se modifica el orden de autocorrección para forzar un centrado.
+
+### Controles finales en Google
+
+En la revisión con expresiones locales pasaron las seis combinaciones tanto en la barra como al confirmar con espacio. Los controles adicionales conservaron `cocodrilo`, corrigieron `programacion → programación` y separaron `gustamucho → gusta mucho`. `holacomo` quedó `holacómo`: el separador general sigue pendiente y este control se registra como fallo, sin considerarlo resuelto por las pruebas del arnés.
