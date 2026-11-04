@@ -41,4 +41,4 @@ Estas pruebas verifican preparación de modelos, integridad, conservación de re
 
 ## Distribución
 
-El paquete completo incluye código y recursos de Samsung y componentes base de Gboard. La licencia MIT de HoneyDelight cubre únicamente sus aportes originales. El borrador permanece privado; hay que revisar por separado los permisos de distribución de esos componentes antes de publicar el binario.
+El paquete completo incluye código y recursos de Samsung y componentes base de Gboard. La licencia MIT de HoneyDelight cubre únicamente sus aportes originales. La alpha no relicencia esos componentes ni concede permisos adicionales sobre ellos. El código de preparación permite reconstruir el artefacto con una copia local compatible.

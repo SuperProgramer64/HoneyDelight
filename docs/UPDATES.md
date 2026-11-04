@@ -1,6 +1,6 @@
 # Publicaciones y app opcional
 
-HoneyDelight Updates consulta la lista pública de releases de `SuperProgramer64/HoneyDelight`, incluidas prereleases. No usa autenticación ni contiene tokens. El repositorio está privado durante la preparación.
+HoneyDelight Updates consulta la lista pública de releases de `SuperProgramer64/HoneyDelight`, incluidas prereleases. No usa autenticación ni contiene tokens. El repositorio es público y las alphas se marcan como prerelease.
 
 Los ZIP deben llevar un identificador de compatibilidad al final del nombre:
 

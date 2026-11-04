@@ -1,6 +1,6 @@
 # Preparación de release · 0.1.0-alpha
 
-**Repositorio privado. No publicar automáticamente.**
+**Alpha experimental pública, publicada por autorización del propietario.**
 
 ## Entregables
 

@@ -6,6 +6,34 @@ El **módulo ZIP** es el producto principal. HoneyDelight Updates es opcional. L
 
 Cada paquete exige el APK exacto de Samsung, la compilación de Android, SDK 36 y arm64-v8a. El APK original de Samsung conserva su firma. El módulo compila localmente durante la instalación para usar la ruta y el ART del teléfono; puede tardar unos segundos. Repite la preparación si cambia la ruta del APK o los binarios de ART. El núcleo utiliza montajes reversibles de odex/vdex y librerías y mantiene los datos privados del teclado.
 
+## Requisitos de esta alpha
+
+| Componente | Versión de referencia |
+| :--- | :--- |
+| Teléfono probado | Galaxy S25+ SM-S936B |
+| Sistema | Android 16 / API 36, One UI 8.5 |
+| Compilación | `S936BXXSBCZG3_OWOBCZG3` |
+| Samsung Keyboard instalado | 5.9.30.97; APK exacto validado por SHA-256 |
+| CPU | arm64-v8a |
+| Root del entorno de desarrollo | KernelSU 3.3.0 |
+| ID del ZIP | `1a9a24823d75` |
+
+Esta es la combinación recomendada para pruebas, no una lista de versiones mínimas o una garantía para todos los S25+. No hay otras versiones validadas. El formato también contempla Magisk, sin una versión de ese gestor comprobada aquí. La activación del módulo en ambos gestores sigue pendiente.
+
+Fingerprint requerido por este ZIP:
+
+```text
+samsung/pa2qxxx/pa2q:16/BP4A.251205.006/S936BXXSBCZG3_OWOBCZG3:user/release-keys
+```
+
+### ¿El módulo instala todo?
+
+Incluye **todos los componentes de HoneyDelight necesarios**: los DEX parcheados, el puente, Delight5 nativo y los modelos base de español e inglés. Compila ART localmente durante la instalación. No requiere Gboard instalado ni una copia de sus datos aprendidos.
+
+**No incluye ni instala el APK original de Samsung Keyboard**: debe existir previamente con la firma y el hash compatibles. Tampoco instala root ni habilita servicios Galaxy AI ausentes. Conserva los datos del teclado y prepara modelos base donde hagan falta. La app Updates solo consulta y descarga; no es el teclado.
+
+Conserva otro teclado habilitado antes de probarlo. Tras una OTA o actualización de Samsung Keyboard, usa un paquete construido para la nueva combinación; el ZIP actual rechazará los cambios incompatibles.
+
 ## 1. Directamente desde KernelSU o Magisk
 
 1. Descarga el ZIP correspondiente a tu compilación cuando esté disponible en Releases.
@@ -21,7 +49,7 @@ Instala la APK opcional, abre la app y activa los avisos si los quieres. Puede c
 
 Guarda los módulos verificados en `Descargas/HoneyDelight`. La instalación se realiza desde el gestor root; la app no instala, no reinicia y no pide root. Puede funcionar sin el módulo instalado.
 
-Mientras el repositorio sea privado y no haya releases públicas, no habrá descargas disponibles. Nunca se distribuye un token del propietario en la APK.
+La app consulta las releases públicas, incluidas alphas. Solo ofrece ZIP que coincidan con el identificador local. Nunca se distribuye un token del propietario en la APK.
 
 Para actualizar la app, instala una APK con la misma firma y un versionCode adecuado. La clave local de firma se mantiene fuera del repositorio.
 

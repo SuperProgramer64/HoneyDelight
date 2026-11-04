@@ -64,8 +64,19 @@ Las posiciones del dedo ya llegan al motor. La calibración personalizada existe
 | Samsung Keyboard | 5.9.30.97 |
 | Interfaz JNI de Gboard | 18.5.6 |
 | Arquitectura | arm64-v8a |
+| Root del entorno de desarrollo | KernelSU 3.3.0; activación como módulo aún sin validar |
+| Compilación Samsung del ZIP | `S936BXXSBCZG3_OWOBCZG3` |
+| Identificador compatible | `1a9a24823d75` |
 
 HoneyDelight no toca el APK original firmado por Samsung. Durante el desarrollo, el código compilado y las librerías se montan encima de forma reversible. Eso sí: los artefactos tienen que corresponder exactamente al APK y al entorno ART de tu dispositivo. Que coincida el número de versión no basta.
+
+### Qué necesitas y qué instala el módulo
+
+La combinación recomendada para **probar esta alpha** es exactamente la de la tabla. No se ha comprobado otra versión de Android, One UI o Samsung Keyboard. El ZIP verifica el fingerprint completo y el hash del APK; tener solo el mismo modelo o número de versión no basta. Magisk es una vía de instalación prevista por el formato, pero no tiene una versión validada en este proyecto.
+
+**El módulo trae el mod completo: puente, parches, biblioteca Delight5 y modelos base de español e inglés. No necesitas instalar Gboard, importar sus datos ni descargar esos modelos por separado.** Necesitas Samsung Keyboard compatible ya instalado y root; el ZIP no instala Samsung Keyboard desde cero ni añade Galaxy AI a dispositivos que no lo soporten. Las funciones de IA siguen dependiendo del servicio y los requisitos de Samsung.
+
+Descarga el ZIP compatible en [Releases](https://github.com/SuperProgramer64/HoneyDelight/releases), instálalo desde el gestor root y conserva otro teclado disponible para recuperar la entrada. Una OTA o actualización del teclado puede exigir un paquete nuevo; no fuerces un ZIP rechazado. La guía detalla los métodos y el estado de validación.
 
 ### La forma principal: el módulo ZIP
 
@@ -84,7 +95,7 @@ La APK de Updates vive en `/data/app` y se actualiza como cualquier app con la m
 
 > **Dónde estamos · 4 de noviembre de 2026:** la revisión del teclado está instalada mediante los montajes de desarrollo. El ZIP pasó compatibilidad, checksums y preparación local de ART en el teléfono; todavía faltan la activación como módulo, el primer arranque y la recuperación. Updates compila e instala; la descarga completa y los avisos desde una release pública aún necesitan prueba.
 
-El repositorio sigue **privado mientras lo preparo**. El actualizador solo consulta releases públicas, así que la APK no lleva credenciales de GitHub.
+El repositorio es **público**, con una alpha experimental. El actualizador solo consulta releases públicas y no lleva credenciales de GitHub.
 
 ### Tres paquetes, tres funciones
 
@@ -104,7 +115,7 @@ La revisión actual tiene pruebas en tres niveles:
 
 | Prueba | Resultado y alcance |
 | :--- | :--- |
-| **Regresiones JVM** | 17 grupos pasaron: arranque por perfil, privacidad, editor, candidatos, respuestas atrasadas y separación, entre otros. |
+| **Regresiones JVM** | 19 grupos pasaron: arranque por perfil, privacidad, editor, candidatos, respuestas atrasadas y separación, entre otros. |
 | **Ruta completa con Delight real** | Última repetición: **90/92**; una anterior obtuvo 92/92. Son 23 entradas, dos repeticiones y dos variantes de coordenadas. `holaxomo` y `holacomo` fallaron una vez cada una con coordenadas y presupuesto de 55 ms; la separación sigue siendo intermitente en ese recorrido. |
 | **Barra y espacio en Google** | Las seis combinaciones de la tabla anterior mostraron separación en la barra y quedaron separadas al pulsar espacio. |
 | **Controles adicionales en Google** | `gustamucho → gusta mucho`, `programacion → programación` y `cocodrilo → cocodrilo` pasaron. `holacomo` había quedado como `holacómo`. La revisión posterior mejoró esos casos; en Google ya se verificaron la sugerencia separada, la confirmación con espacio y el retroceso en ambos casos. |

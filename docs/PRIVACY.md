@@ -18,7 +18,7 @@ La app opcional no solicita root, contactos ni almacenamiento general. Utiliza I
 
 La elección del paquete se realiza localmente a partir de la compilación de Android y del hash del APK instalado de Samsung. El ZIP se descarga, se contrasta con el SHA-256 publicado por GitHub y después se guarda en Descargas/HoneyDelight. Las descargas automáticas se limitan a redes sin medición. Las notificaciones requieren permiso del usuario.
 
-No se incrustan tokens de GitHub. Mientras el repositorio sea privado, el actualizador espera a que haya una publicación pública; no proporciona acceso privado mediante credenciales compartidas.
+No se incrustan tokens de GitHub. El actualizador consulta únicamente publicaciones públicas; no proporciona acceso privado mediante credenciales compartidas.
 
 ## Galaxy AI
 

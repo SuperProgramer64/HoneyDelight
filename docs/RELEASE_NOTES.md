@@ -1,4 +1,4 @@
-# HoneyDelight 0.1.0-alpha · borrador privado
+# HoneyDelight 0.1.0-alpha · experimental
 
 **Tu Samsung Keyboard, con un toque de Delight.**
 
@@ -9,6 +9,12 @@ Conecta Delight5 con Samsung Keyboard y amplía las herramientas de Galaxy AI. E
 - **Módulo ZIP**: entrega principal para el Galaxy S25+ SM-S936B de desarrollo, Android 16 / One UI 8.5 y Samsung Keyboard 5.9.30.97. Valida compatibilidad e integridad y conserva el APK firmado por Samsung.
 - **HoneyDelight Updates 0.1.0-alpha.2** (`versionCode=3`): complemento opcional, con interfaz ámbar renovada e iconos adaptativos. Consulta releases públicas, avisa y descarga por redes sin medición; mantiene la firma de la app anterior. La actualización sobre la app instalada y la pantalla principal se comprobaron en el teléfono de desarrollo. No requiere root ni lee aprendizaje del teclado.
 - **Keyboard APK experimental**: paquete completo con el mod, biblioteca nativa y modelos base. Usa firma propia y no actualiza directamente el teclado oficial. Instalación, permisos de firma y Galaxy AI sin validar; véase [FULL_APK.md](FULL_APK.md).
+
+## Requisitos e instalación
+
+Referencia: **Galaxy S25+ SM-S936B · Android 16 / One UI 8.5 · Samsung Keyboard 5.9.30.97 · arm64-v8a**, compilación `S936BXXSBCZG3_OWOBCZG3`, compatibilidad `1a9a24823d75`. El entorno de desarrollo usa KernelSU 3.3.0. Magisk está contemplado por el formato, sin versión validada.
+
+El **ZIP incluye el mod completo, Delight5 y los modelos base**. Requiere root y Samsung Keyboard compatible ya instalado; no instala ese teclado desde cero ni requiere Gboard. Instálalo desde el gestor root conservando otro teclado disponible. El APK Updates es opcional; el APK Keyboard experimental no sustituye este requisito. [Guía y recuperación](https://github.com/SuperProgramer64/HoneyDelight/blob/main/docs/INSTALLATION.md).
 
 ## Cambios comprobados
 
@@ -29,4 +35,4 @@ El prototipo retirado del menú Corregir no está incluido. Los paquetes excluye
 
 ## Licencia
 
-Código original bajo MIT, © 2026 SuperProgramer64. Los componentes externos y elementos derivados conservan sus propios derechos; véanse `LICENSE` y `THIRD_PARTY_NOTICES.md`. El borrador permanece privado; antes de publicar falta validar instalación y revisar los permisos de distribución de los componentes externos.
+Código original bajo MIT, © 2026 SuperProgramer64. Los componentes externos y elementos derivados conservan sus propios derechos; véanse `LICENSE` y `THIRD_PARTY_NOTICES.md`. La alpha se publica para experimentación; la instalación y el primer arranque del módulo aún no están validados. La MIT no concede derechos sobre los componentes externos.
