@@ -1,0 +1,18 @@
+{
+  "smali/V7/a.smali": "LV7/a;",
+  "smali_classes2/Ui/b.smali": "LUi/b;",
+  "smali_classes2/hj.1/b.smali": "Lhj/b;",
+  "smali_classes2/Qi/a.smali": "LQi/a;",
+  "smali_classes2/Cp/c.smali": "LCp/c;",
+  "smali_classes2/Cp/f.smali": "LCp/f;",
+  "smali_classes2/aj.1/j.smali": "Laj/j;",
+  "smali_classes2/sg.1/H.smali": "Lsg/H;",
+  "smali_classes2/sg.1/g0.1.smali": "Lsg/g0;",
+  "smali_classes2/oi.1/u.smali": "Loi/u;",
+  "smali_classes2/com/samsung/android/writingtoolkit/view/ToolkitBaseResultEditFragment.smali": "Lcom/samsung/android/writingtoolkit/view/ToolkitBaseResultEditFragment;",
+  "smali_classes2/com/samsung/android/writingtoolkit/writingassist/activity/WritingAssistResultEditFragment.smali": "Lcom/samsung/android/writingtoolkit/writingassist/activity/WritingAssistResultEditFragment;",
+  "smali_classes2/com/samsung/android/writingtoolkit/writingassist/viewmodel/module/WritingAssistLabelContainerViewModel.smali": "Lcom/samsung/android/writingtoolkit/writingassist/viewmodel/module/WritingAssistLabelContainerViewModel;",
+  "smali_classes2/com/samsung/android/honeyboard/service/HoneyBoardService.smali": "Lcom/samsung/android/honeyboard/service/HoneyBoardService;",
+  "smali_classes2/com/samsung/android/honeyboard/predictionengine/core/aiwriter/scs/a.smali": "Lcom/samsung/android/honeyboard/predictionengine/core/aiwriter/scs/a;",
+  "smali_classes2/com/samsung/android/honeyboard/forms/model/KeyVO.smali": "Lcom/samsung/android/honeyboard/forms/model/KeyVO;"
+}

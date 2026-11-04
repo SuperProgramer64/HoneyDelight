@@ -1,0 +1,331 @@
+--- a/smali/V7/a.smali
++++ b/smali/V7/a.smali
+@@ -514,6 +514,8 @@
+ .method public final commitText(Ljava/lang/CharSequence;I)Z
+     .locals 7
+ 
++    invoke-static {p1}, Lgbport/Bridge;->beforeGoogleCommit(Ljava/lang/CharSequence;)V
++
+     const-string/jumbo v0, "text"
+ 
+     invoke-static {p1, v0}, Lkotlin/jvm/internal/Intrinsics;->checkNotNullParameter(Ljava/lang/Object;Ljava/lang/String;)V
+@@ -1117,7 +1119,7 @@
+ 
+     move-result v3
+ 
+-    invoke-static {v7, v3, p1}, Landroid/text/TextUtils;->getCapsMode(Ljava/lang/CharSequence;II)I
++    invoke-static {v7, v3, p1}, Lgbport/Bridge;->caps(Ljava/lang/CharSequence;II)I
+ 
+     move-result v4
+ 
+@@ -1134,6 +1136,10 @@
+ 
+     move-result v4
+ 
++    invoke-static {v4, p1}, Lgbport/Bridge;->capsIc(II)I
++
++    move-result v4
++
+     goto :goto_0
+ 
+     :cond_2
+@@ -1142,6 +1148,10 @@
+     if-eqz v3, :cond_3
+ 
+     invoke-interface {v3, p1}, Landroid/view/inputmethod/InputConnection;->getCursorCapsMode(I)I
++
++    move-result v4
++
++    invoke-static {v4, p1}, Lgbport/Bridge;->capsIc(II)I
+ 
+     move-result v4
+ 
+@@ -1651,6 +1661,16 @@
+ .method public final getTextAfterCursor(II)Ljava/lang/CharSequence;
+     .locals 12
+ 
++    invoke-static {p1, p2}, Lgbport/Bridge;->localTextAfter(II)Ljava/lang/CharSequence;
++
++    move-result-object v0
++
++    if-eqz v0, :gb_local_after_miss
++
++    return-object v0
++
++    :gb_local_after_miss
++
+     const-string v0, "getTextAfterCursor"
+ 
+     invoke-static {v0}, LIb/a;->a(Ljava/lang/String;)V
+@@ -1817,6 +1837,16 @@
+ .method public final getTextBeforeCursor(II)Ljava/lang/CharSequence;
+     .locals 13
+ 
++    invoke-static {p1, p2}, Lgbport/Bridge;->localTextBefore(II)Ljava/lang/CharSequence;
++
++    move-result-object v0
++
++    if-eqz v0, :gb_local_before_miss
++
++    return-object v0
++
++    :gb_local_before_miss
++
+     const-string v0, "getTextBeforeCursor"
+ 
+     invoke-static {v0}, LIb/a;->a(Ljava/lang/String;)V
+--- a/smali_classes2/Ui/b.smali
++++ b/smali_classes2/Ui/b.smali
+@@ -1379,6 +1379,8 @@
+ .method public final h(Lcom/microsoft/fluency/KeyShape;[Ljava/lang/String;)V
+     .locals 1
+ 
++    invoke-static {p1, p2}, Lgbport/Bridge;->onKeyShape(Lcom/microsoft/fluency/KeyShape;[Ljava/lang/String;)V
++
+     const-string v0, "keyShape"
+ 
+     invoke-static {p1, v0}, Lkotlin/jvm/internal/Intrinsics;->checkNotNullParameter(Ljava/lang/Object;Ljava/lang/String;)V
+--- a/smali_classes2/hj.1/b.smali
++++ b/smali_classes2/hj.1/b.smali
+@@ -3294,6 +3294,8 @@
+ .method public final Y0(LR6/b;)I
+     .locals 21
+ 
++    invoke-static/range {p1 .. p1}, Lgbport/Bridge;->onBoard(Ljava/lang/Object;)V
++
+     move-object/from16 v0, p0
+ 
+     move-object/from16 v1, p1
+@@ -4018,6 +4020,8 @@
+ 
+ .method public final Y1(LR6/b;)V
+     .locals 10
++
++    invoke-static {p1}, Lgbport/Bridge;->onBoard(Ljava/lang/Object;)V
+ 
+     iget-object v0, p0, Lhj/b;->c:LXi/g;
+ 
+@@ -6183,6 +6187,8 @@
+ 
+ .method public final h1([Landroid/graphics/PointF;I[JB)S
+     .locals 18
++
++    invoke-static/range {p1 .. p4}, Lgbport/Bridge;->onTrace([Landroid/graphics/PointF;I[JB)V
+ 
+     move-object/from16 v0, p0
+ 
+--- a/smali_classes2/Qi/a.smali
++++ b/smali_classes2/Qi/a.smali
+@@ -328,6 +328,8 @@
+ .method public final j(Lcom/microsoft/fluency/Point;Lcom/microsoft/fluency/TouchHistory$ShiftState;)V
+     .locals 3
+ 
++    invoke-static {}, Lgbport/Bridge;->onTap()V
++
+     const-string v0, "point"
+ 
+     invoke-static {p1, v0}, Lkotlin/jvm/internal/Intrinsics;->checkNotNullParameter(Ljava/lang/Object;Ljava/lang/String;)V
+--- a/smali_classes2/Cp/c.smali
++++ b/smali_classes2/Cp/c.smali
+@@ -295,7 +295,7 @@
+ 
+     move-result p0
+ 
+-    if-nez p0, :cond_6
++    # gbport: deshacer/rehacer con dos dedos también con "deslizar para escribir" (s0) activo
+ 
+     invoke-interface {v2}, Lkotlin/Lazy;->getValue()Ljava/lang/Object;
+ 
+--- a/smali_classes2/Cp/f.smali
++++ b/smali_classes2/Cp/f.smali
+@@ -276,6 +276,8 @@
+     iput-object v1, v0, LCp/d;->c:Ljava/lang/Object;
+ 
+     iput-object v0, p0, LCp/f;->g:LCp/d;
++
++    invoke-static {p0}, Lgbport/Bridge;->tuneGestures(Ljava/lang/Object;)V
+ 
+     new-instance v0, LB7/h;
+ 
+--- a/smali_classes2/aj.1/j.smali
++++ b/smali_classes2/aj.1/j.smali
+@@ -308,6 +308,10 @@
+ 
+ .method public final b(LLi/a;LQi/c;Lcom/microsoft/fluency/ResultsFilter;Ldy/k;Z)V
+     .locals 37
++
++    invoke-static/range {p2 .. p2}, Lgbport/Bridge;->setInput(Ljava/lang/Object;)V
++
++    invoke-static/range {p0 .. p0}, Lgbport/Bridge;->setOwner(Ljava/lang/Object;)V
+ 
+     move-object/from16 v1, p0
+ 
+@@ -671,7 +675,7 @@
+     move-object/from16 v12, v27
+ 
+     :goto_6
+-    invoke-interface {v7, v13, v12, v3}, Lcom/microsoft/fluency/Predictor;->getPredictions(Lcom/microsoft/fluency/Sequence;Lcom/microsoft/fluency/TouchHistory;Lcom/microsoft/fluency/ResultsFilter;)Lcom/microsoft/fluency/Predictions;
++    invoke-static {v7, v13, v12, v3}, Lgbport/Bridge;->getPredictions(Lcom/microsoft/fluency/Predictor;Lcom/microsoft/fluency/Sequence;Lcom/microsoft/fluency/TouchHistory;Lcom/microsoft/fluency/ResultsFilter;)Lcom/microsoft/fluency/Predictions;
+ 
+     move-result-object v10
+ 
+@@ -4547,6 +4551,25 @@
+ .method public final k(Ljava/util/List;LLi/a;LQi/c;)Z
+     .locals 29
+ 
++    invoke-static/range {p1 .. p1}, Lgbport/Bridge;->decideAutoReplace(Ljava/util/List;)I
++
++    move-result v0
++
++    const/4 v1, 0x1
++
++    if-ne v0, v1, :gbport_k0
++
++    return v1
++
++    :gbport_k0
++    if-nez v0, :gbport_kcont
++
++    const/4 v1, 0x0
++
++    return v1
++
++    :gbport_kcont
++
+     move-object/from16 v0, p0
+ 
+     move-object/from16 v1, p1
+--- a/smali_classes2/sg.1/H.smali
++++ b/smali_classes2/sg.1/H.smali
+@@ -7432,6 +7432,8 @@
+ .method public i(I)V
+     .locals 8
+ 
++    invoke-static {}, Lgbport/Bridge;->captureLocalEditor()V
++
+     iget-object v0, p0, Lsg/H;->o:Ljava/lang/Object;
+ 
+     check-cast v0, LE5/d;
+--- a/smali_classes2/sg.1/g0.1.smali
++++ b/smali_classes2/sg.1/g0.1.smali
+@@ -1134,6 +1134,8 @@
+     invoke-virtual {v3, v11, v1}, LE5/d;->o(Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+     :goto_b
++    invoke-static {v5}, Lgbport/Bridge;->mergeEmojis(Ljava/util/List;)V
++
+     new-instance v1, Ljava/lang/StringBuilder;
+ 
+     const-string v4, "emojiList:"
+--- a/smali_classes2/oi.1/u.smali
++++ b/smali_classes2/oi.1/u.smali
+@@ -122,6 +122,16 @@
+ # virtual methods
+ .method public final a(Ljava/lang/String;)Ljava/lang/String;
+     .locals 1
++
++    invoke-static {p1}, Lgbport/Ai;->cached(Ljava/lang/String;)Ljava/lang/String;
++
++    move-result-object v0
++
++    if-eqz v0, :gbport_u_cont
++
++    return-object v0
++
++    :gbport_u_cont
+ 
+     const-string p0, "feature"
+ 
+--- a/smali_classes2/com/samsung/android/writingtoolkit/view/ToolkitBaseResultEditFragment.smali
++++ b/smali_classes2/com/samsung/android/writingtoolkit/view/ToolkitBaseResultEditFragment.smali
+@@ -675,6 +675,8 @@
+ 
+     invoke-static {p1, p0}, Landroidx/core/view/W;->j(Landroid/view/View;Landroidx/core/view/i0;)V
+ 
++    invoke-static {v10, p1}, Lgbport/Ai;->decorate(Ljava/lang/Object;Landroid/view/View;)V
++
+     return-void
+ .end method
+ 
+--- a/smali_classes2/com/samsung/android/writingtoolkit/writingassist/activity/WritingAssistResultEditFragment.smali
++++ b/smali_classes2/com/samsung/android/writingtoolkit/writingassist/activity/WritingAssistResultEditFragment.smali
+@@ -340,6 +340,8 @@
+ .method public final w(I)V
+     .locals 3
+ 
++    invoke-static {p1}, Lgbport/EditCommit;->finish(I)V
++
+     const/4 v0, 0x2
+ 
+     if-ne p1, v0, :cond_0
+--- a/smali_classes2/com/samsung/android/writingtoolkit/writingassist/viewmodel/module/WritingAssistLabelContainerViewModel.smali
++++ b/smali_classes2/com/samsung/android/writingtoolkit/writingassist/viewmodel/module/WritingAssistLabelContainerViewModel.smali
+@@ -1439,6 +1439,8 @@
+ .method public onClickEdit()V
+     .locals 5
+ 
++    invoke-static {p0}, Lgbport/EditCommit;->begin(Ljava/lang/Object;)V
++
+     iget-object v0, p0, Lcom/samsung/android/writingtoolkit/writingassist/viewmodel/module/WritingAssistLabelContainerViewModel;->log:Lqb/c;
+ 
+     const/4 v1, 0x0
+--- a/smali_classes2/com/samsung/android/honeyboard/service/HoneyBoardService.smali
++++ b/smali_classes2/com/samsung/android/honeyboard/service/HoneyBoardService.smali
+@@ -14581,6 +14581,8 @@
+ 
+     invoke-static {p1, v0}, Lkotlin/jvm/internal/Intrinsics;->checkNotNullParameter(Ljava/lang/Object;Ljava/lang/String;)V
+ 
++    invoke-static {p0, p1}, Lgbport/Bridge;->onStartInput(Landroid/inputmethodservice/InputMethodService;Landroid/view/inputmethod/EditorInfo;)V
++
+     iget-object v0, p0, Lcom/samsung/android/honeyboard/service/HoneyBoardService;->log:Lqb/c;
+ 
+     const-string v1, "log"
+--- a/smali_classes2/com/samsung/android/honeyboard/predictionengine/core/aiwriter/scs/a.smali
++++ b/smali_classes2/com/samsung/android/honeyboard/predictionengine/core/aiwriter/scs/a.smali
+@@ -3058,6 +3058,18 @@
+ .method public final p(Landroid/content/Context;Ljava/lang/String;Lcom/samsung/android/honeyboard/common/aiwriter/data/PromptParam;LD6/b;)LJa/g;
+     .locals 9
+ 
++    invoke-static {p2, p3}, Lgbport/Ai;->intercept(Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/Object;
++
++    move-result-object v0
++
++    if-eqz v0, :gbport_ai_cont
++
++    check-cast v0, LJa/g;
++
++    return-object v0
++
++    :gbport_ai_cont
++
+     const-string v2, "inputText"
+ 
+     invoke-static {p2, v2}, Lkotlin/jvm/internal/Intrinsics;->checkNotNullParameter(Ljava/lang/Object;Ljava/lang/String;)V
+--- a/smali_classes2/com/samsung/android/honeyboard/forms/model/KeyVO.smali
++++ b/smali_classes2/com/samsung/android/honeyboard/forms/model/KeyVO.smali
+@@ -1614,7 +1614,7 @@
+ .end method
+ 
+ .method public final getNormalBubbles()Ljava/util/List;
+-    .locals 0
++    .locals 1
+     .annotation system Ldalvik/annotation/Signature;
+         value = {
+             "()",
+@@ -1624,9 +1624,13 @@
+         }
+     .end annotation
+ 
+-    iget-object p0, p0, Lcom/samsung/android/honeyboard/forms/model/KeyVO;->normalBubbles:Ljava/util/List;
+-
+-    return-object p0
++    iget-object v0, p0, Lcom/samsung/android/honeyboard/forms/model/KeyVO;->normalBubbles:Ljava/util/List;
++
++    invoke-static {p0, v0}, Lgbport/Bridge;->bubbles(Ljava/lang/Object;Ljava/util/List;)Ljava/util/List;
++
++    move-result-object v0
++
++    return-object v0
+ .end method
+ 
+ .method public final getNormalKey()Lcom/samsung/android/honeyboard/forms/model/LetterKeyCodeLabelVO;

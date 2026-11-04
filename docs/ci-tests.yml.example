@@ -1,0 +1,25 @@
+name: Bridge tests
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Prepare Android SDK components
+        run: sdkmanager 'platforms;android-34' 'build-tools;34.0.0'
+      - name: Run regressions
+        run: bash port/tests/run.sh
+      - name: Test patch resolution
+        run: python3 scripts/tests/test_hooks.py
+      - name: Test private payload packaging
+        run: python3 scripts/tests/test_module.py
+      - name: Test update policy
+        run: bash manager/tests/run.sh
+      - name: Test local CRC installer tool
+        run: python3 module-tools/tests/test_crc.py

@@ -1,0 +1,8 @@
+{
+  "samsung_keyboard_version": "5.9.30.97",
+  "samsung_apk_sha256": "d71ea4e7dfaf2321a95c82a2f76112857a579b8803e429a2baeaf1bac346195b",
+  "gboard_jni_version": "18.5.6",
+  "tested_device": "SM-S936B",
+  "tested_android": 16,
+  "portable_installer": false
+}
