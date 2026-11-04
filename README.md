@@ -70,6 +70,10 @@ Las posiciones del dedo ya llegan al motor. La calibración personalizada existe
 
 HoneyDelight no toca el APK original firmado por Samsung. Durante el desarrollo, el código compilado y las librerías se montan encima de forma reversible. Eso sí: los artefactos tienen que corresponder exactamente al APK y al entorno ART de tu dispositivo. Que coincida el número de versión no basta.
 
+[Compatibilidad teórica con Android 13–16, funcionamiento sin IA y propuesta de teclado montado →](docs/COMPATIBILITY_RESEARCH.md)
+
+La investigación distingue candidatos de portabilidad del soporte actual: el ZIP publicado sigue exigiendo su combinación exacta. Las variantes Core y System Base todavía son propuestas.
+
 ### Qué necesitas y qué instala el módulo
 
 La combinación recomendada para **probar esta alpha** es exactamente la de la tabla. No se ha comprobado otra versión de Android, One UI o Samsung Keyboard. El ZIP verifica el fingerprint completo y el hash del APK; tener solo el mismo modelo o número de versión no basta. Magisk es una vía de instalación prevista por el formato, pero no tiene una versión validada en este proyecto.
