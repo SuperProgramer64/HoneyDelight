@@ -72,7 +72,7 @@ HoneyDelight no toca el APK original firmado por Samsung. Durante el desarrollo,
 
 [Compatibilidad teórica con Android 13–16, funcionamiento sin IA y propuesta de teclado montado →](docs/COMPATIBILITY_RESEARCH.md)
 
-La investigación distingue candidatos de portabilidad del soporte actual: el ZIP publicado sigue exigiendo su combinación exacta. Las variantes Core y System Base todavía son propuestas.
+La investigación distingue candidatos de portabilidad del soporte actual: el ZIP publicado sigue exigiendo su combinación exacta. Las variantes Core y System Base todavía son propuestas. Ya se compararon cuatro APK reales y se ejecutaron regresiones en el Mac: [resultados de portabilidad](docs/COMPATIBILITY_TESTS.md).
 
 ### Qué necesitas y qué instala el módulo
 

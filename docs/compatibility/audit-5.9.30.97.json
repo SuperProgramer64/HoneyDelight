@@ -1,0 +1,146 @@
+{
+  "runtime_validated": false,
+  "scope": "static symbols and read-only patch contexts; reflection, access flags and execution are not verified",
+  "dex_directories": [
+    "smali",
+    "smali_classes2",
+    "smali_classes3"
+  ],
+  "class_count": 21378,
+  "hooks": [
+    {
+      "class": "LV7/a;",
+      "status": "context_matches",
+      "dex_directory": "smali"
+    },
+    {
+      "class": "LUi/b;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "Lhj/b;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "LQi/a;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "LCp/c;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "LCp/f;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "Laj/j;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "Lsg/H;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "Lsg/g0;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "Loi/u;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "Lcom/samsung/android/writingtoolkit/view/ToolkitBaseResultEditFragment;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "Lcom/samsung/android/writingtoolkit/writingassist/activity/WritingAssistResultEditFragment;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "Lcom/samsung/android/writingtoolkit/writingassist/viewmodel/module/WritingAssistLabelContainerViewModel;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "Lcom/samsung/android/honeyboard/service/HoneyBoardService;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "Lcom/samsung/android/honeyboard/predictionengine/core/aiwriter/scs/a;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "Lcom/samsung/android/honeyboard/forms/model/KeyVO;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    }
+  ],
+  "members": [
+    {
+      "reference": "LQi/c;->g()Ljava/lang/String;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/KeyShape;->getPoints()[Lcom/microsoft/fluency/Point;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Point;->getX()F",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Point;->getY()F",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Prediction;-><init>(Ljava/lang/String;D)V",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Prediction;->getPrediction()Ljava/lang/String;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Predictions;-><init>(Ljava/util/List;)V",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Predictor;->getPredictions(Lcom/microsoft/fluency/Sequence;Lcom/microsoft/fluency/TouchHistory;Lcom/microsoft/fluency/ResultsFilter;)Lcom/microsoft/fluency/Predictions;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/ResultsFilter;->getTotal()I",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Sequence;->get(I)Lcom/microsoft/fluency/Term;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Sequence;->size()I",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Term;->getTerm()Ljava/lang/String;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/TouchHistory;->size()I",
+      "status": "declared"
+    }
+  ]
+}

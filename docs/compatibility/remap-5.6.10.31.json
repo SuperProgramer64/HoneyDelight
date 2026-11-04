@@ -1,0 +1,66 @@
+{
+  "runtime_validated": false,
+  "scope": "static symbols and read-only patch contexts; reflection, access flags and execution are not verified",
+  "dex_directories": [
+    "smali",
+    "smali_classes2",
+    "smali_classes3",
+    "smali_classes4"
+  ],
+  "class_count": 29727,
+  "hooks": [],
+  "members": [
+    {
+      "reference": "Lcom/touchtype_fluency/KeyShape;->getPoints()[Lcom/touchtype_fluency/Point;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/touchtype_fluency/Point;->getX()F",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/touchtype_fluency/Point;->getY()F",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/touchtype_fluency/Prediction;-><init>(Ljava/lang/String;D)V",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/touchtype_fluency/Prediction;->getPrediction()Ljava/lang/String;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/touchtype_fluency/Predictions;-><init>(Ljava/util/List;)V",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/touchtype_fluency/Predictor;->getPredictions(Lcom/touchtype_fluency/Sequence;Lcom/touchtype_fluency/TouchHistory;Lcom/touchtype_fluency/ResultsFilter;)Lcom/touchtype_fluency/Predictions;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/touchtype_fluency/ResultsFilter;->getTotal()I",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/touchtype_fluency/Sequence;->get(I)Lcom/touchtype_fluency/Term;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/touchtype_fluency/Sequence;->size()I",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/touchtype_fluency/Term;->getTerm()Ljava/lang/String;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/touchtype_fluency/TouchHistory;->size()I",
+      "status": "declared"
+    }
+  ],
+  "experiment": "Symbolic namespace remap only; no APK/bridge modified or executed",
+  "namespace_remap": {
+    "com/microsoft/fluency/": "com/touchtype_fluency/"
+  }
+}

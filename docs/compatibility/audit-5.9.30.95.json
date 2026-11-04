@@ -1,0 +1,139 @@
+{
+  "runtime_validated": false,
+  "scope": "static symbols and read-only patch contexts; reflection, access flags and execution are not verified",
+  "dex_directories": [
+    "smali",
+    "smali_classes2",
+    "smali_classes3",
+    "smali_classes4"
+  ],
+  "class_count": 37930,
+  "hooks": [
+    {
+      "class": "LV7/a;",
+      "status": "class_missing"
+    },
+    {
+      "class": "LUi/b;",
+      "status": "class_missing"
+    },
+    {
+      "class": "Lhj/b;",
+      "status": "context_differs",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "LQi/a;",
+      "status": "class_missing"
+    },
+    {
+      "class": "LCp/c;",
+      "status": "class_missing"
+    },
+    {
+      "class": "LCp/f;",
+      "status": "class_missing"
+    },
+    {
+      "class": "Laj/j;",
+      "status": "class_missing"
+    },
+    {
+      "class": "Lsg/H;",
+      "status": "class_missing"
+    },
+    {
+      "class": "Lsg/g0;",
+      "status": "context_differs",
+      "dex_directory": "smali_classes2"
+    },
+    {
+      "class": "Loi/u;",
+      "status": "class_missing"
+    },
+    {
+      "class": "Lcom/samsung/android/writingtoolkit/view/ToolkitBaseResultEditFragment;",
+      "status": "context_differs",
+      "dex_directory": "smali_classes4"
+    },
+    {
+      "class": "Lcom/samsung/android/writingtoolkit/writingassist/activity/WritingAssistResultEditFragment;",
+      "status": "context_differs",
+      "dex_directory": "smali_classes4"
+    },
+    {
+      "class": "Lcom/samsung/android/writingtoolkit/writingassist/viewmodel/module/WritingAssistLabelContainerViewModel;",
+      "status": "context_differs",
+      "dex_directory": "smali_classes4"
+    },
+    {
+      "class": "Lcom/samsung/android/honeyboard/service/HoneyBoardService;",
+      "status": "context_differs",
+      "dex_directory": "smali_classes3"
+    },
+    {
+      "class": "Lcom/samsung/android/honeyboard/predictionengine/core/aiwriter/scs/a;",
+      "status": "context_differs",
+      "dex_directory": "smali_classes3"
+    },
+    {
+      "class": "Lcom/samsung/android/honeyboard/forms/model/KeyVO;",
+      "status": "context_matches",
+      "dex_directory": "smali_classes2"
+    }
+  ],
+  "members": [
+    {
+      "reference": "LQi/c;->g()Ljava/lang/String;",
+      "status": "class_missing"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/KeyShape;->getPoints()[Lcom/microsoft/fluency/Point;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Point;->getX()F",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Point;->getY()F",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Prediction;-><init>(Ljava/lang/String;D)V",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Prediction;->getPrediction()Ljava/lang/String;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Predictions;-><init>(Ljava/util/List;)V",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Predictor;->getPredictions(Lcom/microsoft/fluency/Sequence;Lcom/microsoft/fluency/TouchHistory;Lcom/microsoft/fluency/ResultsFilter;)Lcom/microsoft/fluency/Predictions;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/ResultsFilter;->getTotal()I",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Sequence;->get(I)Lcom/microsoft/fluency/Term;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Sequence;->size()I",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/Term;->getTerm()Ljava/lang/String;",
+      "status": "declared"
+    },
+    {
+      "reference": "Lcom/microsoft/fluency/TouchHistory;->size()I",
+      "status": "declared"
+    }
+  ]
+}

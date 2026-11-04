@@ -1,0 +1,74 @@
+[
+  {
+    "case": "reference",
+    "accepted": true,
+    "expected": true,
+    "check_passed": true,
+    "message": "en_us.dict: OK",
+    "scope": "host validation only; not install or boot"
+  },
+  {
+    "case": "older-apk-5.9.30.95",
+    "accepted": false,
+    "expected": false,
+    "check_passed": true,
+    "message": "APK de Samsung no compatible",
+    "scope": "host validation only; not install or boot"
+  },
+  {
+    "case": "older-apk-5.6.10.31",
+    "accepted": false,
+    "expected": false,
+    "check_passed": true,
+    "message": "APK de Samsung no compatible",
+    "scope": "host validation only; not install or boot"
+  },
+  {
+    "case": "sdk-33",
+    "accepted": false,
+    "expected": false,
+    "check_passed": true,
+    "message": "Arquitectura o SDK no compatibles",
+    "scope": "host validation only; not install or boot"
+  },
+  {
+    "case": "sdk-34",
+    "accepted": false,
+    "expected": false,
+    "check_passed": true,
+    "message": "Arquitectura o SDK no compatibles",
+    "scope": "host validation only; not install or boot"
+  },
+  {
+    "case": "sdk-35",
+    "accepted": false,
+    "expected": false,
+    "check_passed": true,
+    "message": "Arquitectura o SDK no compatibles",
+    "scope": "host validation only; not install or boot"
+  },
+  {
+    "case": "wrong-abi",
+    "accepted": false,
+    "expected": false,
+    "check_passed": true,
+    "message": "Arquitectura o SDK no compatibles",
+    "scope": "host validation only; not install or boot"
+  },
+  {
+    "case": "wrong-firmware",
+    "accepted": false,
+    "expected": false,
+    "check_passed": true,
+    "message": "Compilación Android/ART no compatible",
+    "scope": "host validation only; not install or boot"
+  },
+  {
+    "case": "older-apk-5.9.20.87",
+    "accepted": false,
+    "expected": false,
+    "check_passed": true,
+    "message": "APK de Samsung no compatible",
+    "scope": "host validation only; not install or boot"
+  }
+]

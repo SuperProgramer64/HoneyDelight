@@ -2,6 +2,8 @@
 
 Investigación del 4 de noviembre de 2026. **Este documento propone objetivos de portabilidad; no amplía la compatibilidad del ZIP publicado.** La única combinación de desarrollo comprobada sigue siendo SM-S936B, Android 16 / One UI 8.5, Samsung Keyboard 5.9.30.97 y el fingerprint/hash de la alpha. Su activación como módulo y primer arranque siguen pendientes.
 
+[Pruebas posteriores con cuatro APK reales y simulación del namespace antiguo →](COMPATIBILITY_TESTS.md)
+
 ## Resultado
 
 Es viable diseñar una edición **Core sin Galaxy AI** y otra opción que aporte una base compatible de Samsung Keyboard mediante un montaje de sistema. Son dos decisiones independientes: qué funciones se activan y cómo se proporciona el teclado base.

@@ -1,0 +1,9 @@
+{
+  "scope": "Candidate interfaces identified by input event signature; exact composing getter semantics not verified; no remap applied",
+  "runtime_validated": false,
+  "candidates": {
+    "5.9.30.95": "Lr40/e;",
+    "5.9.20.87": "Lg40/c;",
+    "5.6.10.31": "Lcom/samsung/android/honeyboard/v/h/d/j/a/c;"
+  }
+}
