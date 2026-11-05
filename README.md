@@ -1,46 +1,48 @@
+**English** · [Español](README.es.md)
+
 <div align="center">
 
-![HoneyDelight — Tu Samsung Keyboard, con un toque de Delight.](assets/banner.svg)
+![HoneyDelight — Your Samsung Keyboard, with a touch of Delight.](assets/banner-en.svg)
 
-**Se ve como Samsung. Predice con Delight.**
+**Looks like Samsung. Predicts with Delight.**
 
-![Estado: alpha experimental](https://img.shields.io/badge/estado-alpha_experimental-e9b45d?style=flat-square)
-![Android probado: 16](https://img.shields.io/badge/Android_probado-16-b9e7dd?style=flat-square)
-[![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue?style=flat-square)](LICENSE)
-![Acceso root necesario](https://img.shields.io/badge/root-necesario-d5dae0?style=flat-square)
+![Status: experimental alpha](https://img.shields.io/badge/status-experimental_alpha-e9b45d?style=flat-square)
+![Android tested: 16](https://img.shields.io/badge/Android_tested-16-b9e7dd?style=flat-square)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+![Root required](https://img.shields.io/badge/root-required-d5dae0?style=flat-square)
 
-[Qué hace](#qué-hace) · [Compatibilidad](#compatibilidad) · [Cómo lo probé](#cómo-lo-probé) · [Lo que viene](#lo-que-viene)
+[Features](#features) · [Compatibility](#compatibility) · [Testing](#testing) · [Roadmap](#roadmap)
 
 </div>
 
-## Por qué existe
+## Why it exists
 
-Me gusta Samsung Keyboard: su diseño, sus gestos, cómo encaja con el resto del teléfono. Lo que nunca me terminó de convencer era lo que pasaba por dentro: sugerencias que no entendían el contexto, correcciones que llegaban tarde o no llegaban, palabras pegadas que tocaba separar a mano.
+I like Samsung Keyboard: its design, gestures and the way it fits into the rest of the phone. What kept bothering me was the typing underneath: suggestions that missed the context, corrections that arrived late or never arrived, and joined words I had to separate by hand.
 
-HoneyDelight nace de esa espinita. Conecta **Delight5, el motor nativo de Gboard**, con la interfaz de Samsung Keyboard, para conservar el teclado que ya conoces y aprovechar su motor de predicción. El puente añade sus propias reglas; el resultado todavía tiene diferencias respecto a la app Gboard. Por el camino también le saqué más partido a Galaxy AI y fui arreglando los tropiezos que aparecían al juntar los dos mundos: palabras pegadas, sugerencias repetidas, campos que no corregían y esperas que volvían lento el editor de reescritura.
+HoneyDelight grew out of that. It connects **Delight5, Gboard's native prediction engine**, to the Samsung Keyboard interface, keeping the keyboard I enjoy using while drawing on a different prediction engine. The bridge adds its own rules, so its behavior still differs from the Gboard app. Along the way, I also expanded the Galaxy AI writing tools and worked through the rough edges of bringing the pieces together: joined words, repeated suggestions, fields that would not correct text, and waits that slowed down the rewrite editor.
 
-Está en alpha y lo uso en mi propio teléfono. Las pruebas y el uso diario van marcando qué mejorar. Cuando un ajuste empeora las sugerencias, vuelvo a la revisión anterior y guardo el caso para reproducirlo.
+It is an alpha that I use on my own phone. Testing and everyday use guide the next changes. When an adjustment makes suggestions worse, I return to the previous revision and keep the example as a regression case.
 
-### ¿Por qué HoneyDelight?
+### Why “HoneyDelight”?
 
-**Honey** es por **HoneyBoard**, el nombre interno de Samsung Keyboard. **Delight**, por el motor que le da la predicción. El nombre reúne las dos piezas que quiero hacer trabajar juntas.
+**Honey** comes from **HoneyBoard**, Samsung Keyboard's internal name. **Delight** comes from the prediction engine. The name brings together the two pieces I want to work well together.
 
-## Qué hace
+## Features
 
-| Área | Lo que aporta HoneyDelight |
+| Area | What HoneyDelight adds |
 | :--- | :--- |
-| **Predicción** | Sugerencias de Delight5 que tienen en cuenta lo que escribiste antes, con reglas de corrección y la forma real del teclado. |
-| **Palabras pegadas** | Combina el separador de Delight con una tabla local de 16 expresiones frecuentes. Filtra repeticiones y alternativas pegadas cuando acepta un corte. |
-| **Toques y gestos** | El motor recibe dónde tocó tu dedo de verdad, y el deslizar usa el decodificador de gestos de Delight5. |
-| **Aprendizaje** | Utiliza el historial local disponible y filtros que reducen el aprendizaje de erratas y texto pegado. No importa los datos aprendidos de quien desarrolla el mod. |
-| **Campos difíciles** | Vuelve a corregir en los campos de Google que lo tenían desactivado, sin tocar las barras de direcciones de los navegadores. |
-| **Galaxy AI** | Estilos nuevos y una cápsula en Editar para decirle a la IA cómo quieres el texto, con mejoras al confirmar el resultado. |
-| **Fluidez** | Corrige las esperas reproducidas entre el editor y los hilos de predicción; las pruebas del usuario confirmaron menos lag. |
-| **Conexión** | Espera el directorio del perfil actual antes de iniciar Delight y reintenta los fallos temporales, sin desactivarlo para todo el proceso. |
+| **Prediction** | Delight5 suggestions that consider the preceding text, with correction rules and the keyboard's actual geometry. |
+| **Joined words** | Combines Delight's word splitting with a local table of 16 common expressions. Filters repetitions and joined alternatives when it accepts a split. |
+| **Touch and gestures** | Passes actual touch coordinates to the engine and uses Delight5's gesture decoder for swipe input. |
+| **Learning** | Uses available local history, with filters that reduce learning from typos and pasted text. Does not import the developer's learned data. |
+| **Difficult fields** | Restores correction in supported Google fields where it was disabled, while preserving browser address-bar behavior. |
+| **Galaxy AI** | Additional styles and an instruction field inside Edit, with improvements to confirming the rewritten result. |
+| **Responsiveness** | Addresses reproduced waits between the editor and prediction threads; user testing confirmed less lag. |
+| **Startup** | Waits for the current profile's directory before starting Delight and retries temporary failures instead of disabling it for the whole process. |
 
-Comprobados **en la barra del teclado y al pulsar espacio en Google**, el 4 de noviembre de 2026:
+Verified **in the suggestion bar and when pressing space in Google**, on November 4, 2026:
 
-| Entrada | Sugerencia y texto confirmado |
+| Input | Suggestion and committed text |
 | :--- | :--- |
 | `buenosdias` | buenos días |
 | `buenastardes` | buenas tardes |
@@ -49,105 +51,105 @@ Comprobados **en la barra del teclado y al pulsar espacio en Google**, el 4 de n
 | `tequiero` | te quiero |
 | `porfavor` | por favor |
 
-Los 16 casos de la tabla local se resuelven sin gastar el presupuesto opcional de búsqueda del motor. El resto sigue pasando por el separador general, que aún necesita trabajo. `gustamucho → gusta mucho` también pasó el control en Google; la revisión más reciente añade corrección de una letra en la parte derecha y evita duplicar la composición al retroceder.
+The 16 local expressions are resolved without using the engine's optional search budget. Other expressions still use the general splitter, which needs more work. `gustamucho → gusta mucho` also passed the Google check; the latest revision adds conservative one-letter correction in the right-hand part of a split and prevents composition duplication after backspace.
 
-Las posiciones del dedo ya llegan al motor. La calibración personalizada existe, pero la dejé apagada: hasta que no demuestre que acierta más, no se activa.
+Touch coordinates already reach the engine. Personalized calibration exists, but remains disabled until it demonstrates better results.
 
-## Compatibilidad
+## Compatibility
 
-> **Esta primera alpha es para gente con root que sepa preparar su instalación y volver atrás si algo sale mal. Todavía no es un instalador para todo el mundo.**
+> **This first alpha is for experienced root users who can prepare their setup and recover if something goes wrong. It is not yet a general-purpose installer.**
 
-| Componente | Entorno probado |
+| Component | Tested environment |
 | :--- | :--- |
-| Dispositivo | Samsung Galaxy S25+ · SM-S936B |
-| Sistema | Android 16 · One UI 8.5 |
+| Device | Samsung Galaxy S25+ · SM-S936B |
+| System | Android 16 · One UI 8.5 |
 | Samsung Keyboard | 5.9.30.97 |
-| Interfaz JNI de Gboard | 18.5.6 |
-| Arquitectura | arm64-v8a |
-| Root del entorno de desarrollo | KernelSU 3.3.0; activación como módulo aún sin validar |
-| Compilación Samsung del ZIP | `S936BXXSBCZG3_OWOBCZG3` |
-| Identificador compatible | `1a9a24823d75` |
+| Gboard JNI interface | 18.5.6 |
+| Architecture | arm64-v8a |
+| Development root environment | KernelSU 3.3.0; module activation still unvalidated |
+| ZIP firmware build | `S936BXXSBCZG3_OWOBCZG3` |
+| Compatibility ID | `1a9a24823d75` |
 
-HoneyDelight no toca el APK original firmado por Samsung. Durante el desarrollo, el código compilado y las librerías se montan encima de forma reversible. Eso sí: los artefactos tienen que corresponder exactamente al APK y al entorno ART de tu dispositivo. Que coincida el número de versión no basta.
+The module keeps Samsung's original signed APK intact. During development, compiled code and libraries are mounted over the original paths reversibly. The artifacts must match the exact APK and ART environment on the device. Matching the version number alone is not enough.
 
-[Compatibilidad teórica con Android 13–16, funcionamiento sin IA y propuesta de teclado montado →](docs/COMPATIBILITY_RESEARCH.md)
+[Theoretical Android 13–16 compatibility, operation without AI and a proposed system-mounted keyboard variant →](docs/COMPATIBILITY_RESEARCH.md) *(Spanish)*
 
-La investigación distingue candidatos de portabilidad del soporte actual: el ZIP publicado sigue exigiendo su combinación exacta. Las variantes Core y System Base todavía son propuestas. Ya se compararon cuatro APK reales y se ejecutaron regresiones en el Mac: [resultados de portabilidad](docs/COMPATIBILITY_TESTS.md).
+That research separates porting candidates from current support: the released ZIP still requires its exact target environment. Core and System Base editions remain proposals. Four real APKs have now been compared and host regressions run on the Mac: [portability test results](docs/COMPATIBILITY_TESTS.md) *(Spanish)*.
 
-### Qué necesitas y qué instala el módulo
+### Requirements and what the module installs
 
-La combinación recomendada para **probar esta alpha** es exactamente la de la tabla. No se ha comprobado otra versión de Android, One UI o Samsung Keyboard. El ZIP verifica el fingerprint completo y el hash del APK; tener solo el mismo modelo o número de versión no basta. Magisk es una vía de instalación prevista por el formato, pero no tiene una versión validada en este proyecto.
+The recommended environment for **testing this alpha** is exactly the one in the table. No other Android, One UI or Samsung Keyboard version has been validated. The ZIP checks the full firmware fingerprint and APK hash; sharing a model or version number is not enough. The packaging supports a Magisk installation route, but no Magisk version has been validated in this project.
 
-**El módulo trae el mod completo: puente, parches, biblioteca Delight5 y modelos base de español e inglés. No necesitas instalar Gboard, importar sus datos ni descargar esos modelos por separado.** Necesitas Samsung Keyboard compatible ya instalado y root; el ZIP no instala Samsung Keyboard desde cero ni añade Galaxy AI a dispositivos que no lo soporten. Las funciones de IA siguen dependiendo del servicio y los requisitos de Samsung.
+**The module includes the complete mod: bridge, patches, Delight5 library and Spanish/English base models. You do not need to install Gboard, import its data or download those models separately.** It requires root and an existing compatible Samsung Keyboard installation. It does not install Samsung Keyboard from scratch or add Galaxy AI to unsupported devices. AI features still depend on Samsung's services and requirements.
 
-Descarga el ZIP compatible en [Releases](https://github.com/SuperProgramer64/HoneyDelight/releases), instálalo desde el gestor root y conserva otro teclado disponible para recuperar la entrada. Una OTA o actualización del teclado puede exigir un paquete nuevo; no fuerces un ZIP rechazado. La guía detalla los métodos y el estado de validación.
+Download the matching ZIP from [Releases](https://github.com/SuperProgramer64/HoneyDelight/releases), install through the root manager and keep another keyboard available for recovery. An OTA or keyboard update may require a new package; do not force a ZIP that the installer rejects. The guide explains the installation methods and validation status.
 
-### La forma principal: el módulo ZIP
+### Main installation method: the module ZIP
 
-La entrega principal es un **módulo root** en formato KernelSU/Magisk. La app es opcional. La activación desde el gestor y el primer arranque de esta alpha siguen pendientes de validación. Cada ZIP está hecho para una compilación concreta y, antes de instalarse, comprueba el APK, la versión de Android y que sus archivos estén íntegros.
+The main package is a **root module** in KernelSU/Magisk format. The companion app is optional. Module-manager activation and this alpha's first boot still need validation. Each ZIP targets a specific firmware build and checks the APK, Android version and file integrity before installation.
 
-Si quieres enterarte de las versiones nuevas sin estar pendiente, existe **HoneyDelight Updates**, un complemento opcional: te avisa y puede bajar el ZIP compatible por Wi-Fi o redes sin medición. Comprueba el SHA-256, lo guarda en `Descargas/HoneyDelight` y la instalación la decides tú. No pide root ni toca tus historiales ni modelos aprendidos.
+For release notifications, **HoneyDelight Updates** is an optional companion. It can notify you and download a compatible ZIP over Wi-Fi or other unmetered networks. It verifies SHA-256, saves it to `Downloads/HoneyDelight` and leaves installation to you. It does not request root or access learned history or models.
 
-| Método | Uso |
+| Method | How it works |
 | :--- | :--- |
-| **KernelSU / Magisk** | Descarga el ZIP y usa «Instalar desde almacenamiento» en el gestor. |
-| **HoneyDelight Updates** | Consulta y descarga las releases; abre el ZIP con el gestor root. Opcional. |
-| **Termux con root** | Ejecuta el instalador de módulos de tu gestor mediante `su`. |
-| **ADB con root** | Copia el ZIP al teléfono y llama al mismo instalador desde ADB. |
+| **KernelSU / Magisk** | Download the ZIP and select “Install from storage” in the root manager. |
+| **HoneyDelight Updates** | Checks releases and downloads a matching ZIP, which you open with the root manager. Optional. |
+| **Termux with root** | Invoke the root manager's module installer through `su`. |
+| **ADB with root** | Copy the ZIP to the phone and invoke the same installer through ADB. |
 
-La APK de Updates vive en `/data/app` y se actualiza como cualquier app con la misma firma. El teclado sigue siendo el original firmado por Samsung; nunca se reemplaza por uno refirmado.
+The Updates APK lives in `/data/app` and can be updated like other apps with the same signing certificate. With the module, the keyboard remains Samsung's original signed APK.
 
-> **Dónde estamos · 4 de noviembre de 2026:** la revisión del teclado está instalada mediante los montajes de desarrollo. El ZIP pasó compatibilidad, checksums y preparación local de ART en el teléfono; todavía faltan la activación como módulo, el primer arranque y la recuperación. Updates compila e instala; la descarga completa y los avisos desde una release pública aún necesitan prueba.
+> **Current status · November 4, 2026:** the keyboard revision is installed through development mounts. The ZIP passed compatibility, checksum and local ART-preparation checks on the phone; module activation, first boot and recovery are still pending. Updates builds and installs; an end-to-end download and notifications from a public release still need testing.
 
-El repositorio es **público**, con una alpha experimental. El actualizador solo consulta releases públicas y no lleva credenciales de GitHub.
+The repository is **public**, with an experimental alpha. The updater only checks public releases and contains no GitHub credentials.
 
-### Tres paquetes, tres funciones
+### Three packages, three roles
 
-| Archivo | Para qué sirve | Estado |
+| File | Purpose | Status |
 | :--- | :--- | :--- |
-| **Módulo ZIP** | Aplicar HoneyDelight conservando el APK firmado por Samsung. | Entrega principal; preparación e integridad verificadas. Falta validar activación desde el gestor y primer arranque. |
-| **HoneyDelight Updates APK** | Consultar y descargar módulos compatibles. Interfaz renovada, iconos adaptativos y avisos. | App opcional, sin root ni modelos aprendidos. `0.1.0-alpha.2`, con la misma firma de las versiones de prueba. |
-| **Keyboard APK experimental** | APK completo con código modificado, biblioteca y modelos base incluidos. | Firmado con clave propia; no actualiza directamente el teclado oficial. Instalación y permisos/servicios de Samsung pendientes de validar. |
+| **Module ZIP** | Apply HoneyDelight while retaining Samsung's signed APK. | Main package; preparation and integrity verified. Module-manager activation and first boot remain unvalidated. |
+| **HoneyDelight Updates APK** | Find and download compatible modules, with the refreshed interface, adaptive icons and notifications. | Optional app, without root access or learned models. `0.1.0-alpha.2`, signed with the same certificate as earlier test versions. |
+| **Experimental Keyboard APK** | Complete APK containing modified code, the native library and base models. | Signed with a project key; cannot directly update Samsung's official keyboard. Installation and Samsung permissions/services remain unvalidated. |
 
-[Qué contiene el APK completo y por qué es experimental →](docs/FULL_APK.md)
+[What the complete APK contains and why it is experimental →](docs/FULL_APK.md) *(Spanish)*
 
-[Instalación, comandos y recuperación →](docs/INSTALLATION.md)
+[Installation commands and recovery →](docs/INSTALLATION.md) *(Spanish)*
 
-## Cómo lo probé
+## Testing
 
-La revisión actual tiene pruebas en tres niveles:
+The current revision has three levels of testing:
 
-| Prueba | Resultado y alcance |
+| Check | Result and scope |
 | :--- | :--- |
-| **Regresiones JVM** | 19 grupos pasaron: arranque por perfil, privacidad, editor, candidatos, respuestas atrasadas y separación, entre otros. |
-| **Ruta completa con Delight real** | Última repetición: **90/92**; una anterior obtuvo 92/92. Son 23 entradas, dos repeticiones y dos variantes de coordenadas. `holaxomo` y `holacomo` fallaron una vez cada una con coordenadas y presupuesto de 55 ms; la separación sigue siendo intermitente en ese recorrido. |
-| **Barra y espacio en Google** | Las seis combinaciones de la tabla anterior mostraron separación en la barra y quedaron separadas al pulsar espacio. |
-| **Controles adicionales en Google** | `gustamucho → gusta mucho`, `programacion → programación` y `cocodrilo → cocodrilo` pasaron. `holacomo` había quedado como `holacómo`. La revisión posterior mejoró esos casos; en Google ya se verificaron la sugerencia separada, la confirmación con espacio y el retroceso en ambos casos. |
-| **Comparación ampliada del cálculo** | 82/84 decisiones esperadas. Los dos fallos fueron `erroes → errors` con coordenadas simuladas; la mezcla español/inglés sigue pendiente. |
-| **Empaquetado y actualizador** | Pasaron las pruebas de exclusión de datos personales, compatibilidad, parche, CRC y selección/verificación de descargas. |
+| **JVM regressions** | 19 groups passed, covering profile startup, privacy, editor behavior, candidates, stale responses and splitting, among other cases. |
+| **Full prediction path with real Delight** | Latest repeat: **90/92**; an earlier run returned 92/92. These are 23 inputs, two rounds and two coordinate variants. `holaxomo` and `holacomo` each failed once with coordinates and a 55 ms budget; splitting remains intermittent in that path. |
+| **Suggestion bar and space in Google** | All six expressions above appeared separated in the bar and were committed with spaces. |
+| **Additional Google checks** | `gustamucho → gusta mucho`, `programacion → programación` and `cocodrilo → cocodrilo` passed. `holacomo` had previously become `holacómo`. The later revision improved those cases; separated suggestions, space commits and backspace were verified in Google for both `holacomo` and `holaxomo`. |
+| **Broader decision comparison** | 82/84 expected decisions. Both failures were `erroes → errors` with simulated coordinates; Spanish/English ranking still needs work. |
+| **Packaging and updater** | Checks passed for personal-data exclusion, compatibility, patching, CRC and download selection/verification. |
 
-Estas cifras corresponden a una regresión concreta, no a un porcentaje de precisión global ni una comparación general con Gboard. La prueba nativa usa diccionarios base; los contenedores de prueba y los datos aprendidos no se empaquetan en el teclado.
+These figures describe specific regressions, not an overall accuracy percentage or a general comparison with Gboard. Native tests use base dictionaries; test containers and learned data are not packaged in the keyboard.
 
-La fluidez del editor tampoco se ajustó solo a ojo: las trazas mostraron una espera circular de Samsung de unos 500 ms antes del arreglo. Después, el usuario confirmó menos lag en ambos campos. No atribuyo a la revisión una latencia final exacta que no se haya medido.
+The editor change was also informed by traces: they showed a Samsung circular wait of roughly 500 ms before the fix. The user then confirmed less lag in both fields. No exact final latency is claimed without a measurement.
 
-En otra evaluación del toque reservé 100 palabras: centros de las teclas, coordenadas reales y centros personalizados obtuvieron 80 aciertos cada uno. La calibración personalizada sigue apagada porque todavía no mostró ventaja.
+A separate touch evaluation held out 100 words: nominal key centers, actual coordinates and personalized centers each scored 80 correct results. Personalized calibration stays disabled because it has not shown an advantage.
 
-### Lo que todavía falla
+### Known limitations
 
-- La separación general aún tiene fallos intermitentes con el presupuesto corto de 55 ms; la última repetición nativa obtuvo 90/92. La revisión del caso `holaxomo` también comprueba espacio y retroceso; una tabla local de expresiones frecuentes no resuelve cualquier combinación posible.
-- La mezcla español/inglés puede elegir una corrección del otro idioma.
-- La carga efectiva en el perfil de apps duplicadas aún necesita comprobación en uso, aunque la regresión de arranque por perfil pasó.
-- Cuando queda una sola sugerencia, Samsung la coloca a la izquierda; el centrado no se ha modificado.
-- Falta completar las pruebas de instalación, primer arranque y recuperación del módulo.
+- General splitting still has intermittent failures within the short 55 ms budget; the latest native repeat returned 90/92. The `holaxomo` revision also checks space and backspace; the local expression table does not solve every possible combination.
+- Mixed Spanish/English input can select a correction from the other language.
+- Effective loading in cloned-app profiles still needs in-use verification, although the profile-startup regression passed.
+- Samsung places a single remaining suggestion on the left; that alignment has not been changed.
+- Module installation, first boot and recovery still need complete testing.
 
-[Estado completo y límites conocidos →](docs/STATUS.md)
+[Detailed status and known limitations →](docs/STATUS.md) *(Spanish)*
 
-## Construir y probar
+## Build and test
 
-Necesitas **JDK 17**, Android SDK Platform 34 y Build Tools 34.0.0.
+You need **JDK 17**, Android SDK Platform 34 and Build Tools 34.0.0.
 
 ```sh
-export ANDROID_HOME=/ruta/a/android-sdk
+export ANDROID_HOME=/path/to/android-sdk
 bash port/tests/run.sh
 python3 scripts/tests/test_hooks.py
 python3 scripts/tests/test_module.py
@@ -155,60 +157,60 @@ bash manager/tests/run.sh
 python3 module-tools/tests/test_crc.py
 ```
 
-La regresión de la ruta completa requiere un dispositivo seleccionado y los componentes base verificados:
+The full prediction-path regression requires a selected device and verified base components:
 
 ```sh
-export ANDROID_SERIAL=identificador-de-tu-dispositivo
-export BASE_COMPONENTS_DIR=/ruta/a/componentes-base-locales
+export ANDROID_SERIAL=your-device-serial
+export BASE_COMPONENTS_DIR=/path/to/local-base-components
 bash scripts/test-native-predictions.sh
 ```
 
-Ese script usa una carpeta temporal de prueba: no instala el teclado, no abre apps ni consulta el aprendizaje del usuario.
+That script uses a temporary test directory. It does not install the keyboard, open apps or read the user's learned data.
 
-Para preparar una copia local del APK compatible:
+To prepare a local copy of the compatible APK:
 
 ```sh
-export APKTOOL_JAR=/ruta/a/apktool_2.12.1.jar
-bash scripts/prepare-samsung.sh /ruta/a/base.apk
+export APKTOOL_JAR=/path/to/apktool_2.12.1.jar
+bash scripts/prepare-samsung.sh /path/to/base.apk
 ```
 
-El script verifica el hash antes de aplicar los parches. No toca el APK instalado ni instala nada en el teléfono.
+The script checks the hash before applying patches. It does not touch the installed APK or install anything on the phone.
 
-[Guía de construcción →](docs/BUILD.md)
+[Build guide →](docs/BUILD.md) *(Spanish)*
 
-## Lo que viene
+## Roadmap
 
-- [x] Empaquetador de módulo que comprueba APK, compilación de Android, arquitectura e integridad.
-- [x] App opcional que avisa y descarga releases compatibles.
-- [x] Registro detallado opcional, apagado por defecto en la preparación de release.
-- [x] Ruta local para 16 expresiones frecuentes y regresión nativa de la predicción completa.
-- [ ] Ampliar la separación general sin depender de una lista de expresiones.
-- [ ] Confirmar el arranque efectivo de Delight en apps duplicadas.
-- [ ] Verificar de punta a punta la instalación, activación y primer arranque del módulo.
-- [ ] Desactivación y recuperación probadas cuando el teclado se actualice.
-- [ ] Pruebas de arranque y en otros dispositivos compatibles.
-- [ ] Menos correcciones no deseadas al mezclar español e inglés.
-- [ ] Aprender de las correcciones que deshaces.
-- [ ] Calibración del dedo que demuestre una mejora real con datos reservados.
+- [x] Module packager that checks the APK, Android build, architecture and integrity.
+- [x] Optional app for release notifications and compatible downloads.
+- [x] Optional detailed logging, disabled by default in release preparation.
+- [x] Local handling of 16 common expressions and a full prediction-path native regression.
+- [ ] Improve general splitting beyond the expression list.
+- [ ] Confirm effective Delight startup in cloned apps.
+- [ ] Verify module installation, activation and first boot end to end.
+- [ ] Test deactivation and recovery across keyboard updates.
+- [ ] Test startup and other compatible devices.
+- [ ] Reduce unwanted corrections when mixing Spanish and English.
+- [ ] Learn from corrections the user undoes.
+- [ ] Enable personalized touch calibration only after a held-out evaluation shows an improvement.
 
-**Corregir desde el menú de selección** se quedó por el camino: no convenció en las pruebas, así que no viene incluido.
+**Correction from the text-selection menu** did not make this release: the prototype did not meet expectations in testing and was removed.
 
-## Código, datos y componentes externos
+## Code, data and third-party components
 
-Aquí está el código propio del proyecto: el puente, sus declaraciones JNI y stubs, los arneses de prueba, los parches de integración y la documentación. **El árbol de código no incluye APK de Samsung o Gboard, librerías nativas, modelos, historiales, contactos, conversaciones, claves ni tokens de mi teléfono.** El módulo local sí lleva los componentes base que necesita para funcionar, con hashes fijados, pero nada de lo que el teclado haya aprendido de quien lo usa.
+This repository contains the project's own code: the bridge, JNI declarations and stubs, test harnesses, integration patches and documentation. **The source tree does not include Samsung or Gboard APKs, native libraries, models, history, contacts, conversations, keys or tokens from my phone.** The local module package includes the base components it needs, with pinned hashes, but none of the developer's learned keyboard data.
 
-El registro detallado viene apagado. Si lo enciendes, ten en cuenta que puede guardar texto personal: revísalo antes de compartirlo. Las funciones de Galaxy AI usan los servicios y ajustes de Samsung, así que algunas pueden necesitar conexión.
+Detailed logging is disabled by default. If enabled, logs can contain personal text; review them before sharing. Galaxy AI features use Samsung's services and device settings, so some may require a network connection.
 
-[Privacidad y diagnóstico →](docs/PRIVACY.md)
+[Privacy and diagnostics →](docs/PRIVACY.md) *(Spanish)*
 
-## Colaborar
+## Contributing
 
-¿Encontraste un fallo? Cuéntame en qué campo pasó, qué hiciste, qué esperabas y qué salió. Añade el modelo, la versión de Android/One UI y la de Samsung Keyboard. Si es de predicción, una frase inventada que lo reproduzca ayuda más que una conversación real, y de paso protege tu privacidad.
+Found a problem? Describe the field, your steps, the expected behavior and what happened. Include the device model, Android/One UI version and Samsung Keyboard version. For prediction issues, an invented sentence that reproduces the problem is more useful than a real conversation and protects your privacy.
 
-Si quieres proponer un cambio, pasa antes las regresiones y cuéntame qué caso mejora. Por favor, no adjuntes componentes propietarios ni datos personales.
+For a proposed change, run the regressions first and explain which case it improves. Please do not attach proprietary components or personal data.
 
 ---
 
-Creado por **[SuperProgramer64](https://github.com/SuperProgramer64)**, frase de prueba a frase de prueba. HoneyDelight es un proyecto independiente, sin afiliación con Samsung, Google o Microsoft.
+Created by **[SuperProgramer64](https://github.com/SuperProgramer64)**, one test phrase at a time. HoneyDelight is an independent project, unaffiliated with Samsung, Google or Microsoft.
 
-El código original de HoneyDelight se distribuye bajo la [licencia MIT](LICENSE), © 2026 SuperProgramer64. El alcance y las excepciones de componentes externos se detallan en [Avisos de terceros](THIRD_PARTY_NOTICES.md).
+Original HoneyDelight code is distributed under the [MIT license](LICENSE), © 2026 SuperProgramer64. Scope and third-party exclusions are detailed in [Third-party notices](THIRD_PARTY_NOTICES.md) *(Spanish)*.

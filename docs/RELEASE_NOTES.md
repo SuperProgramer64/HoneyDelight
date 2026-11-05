@@ -1,3 +1,50 @@
+[English](#english) · [Español](#espanol)
+
+<a id="english"></a>
+
+# HoneyDelight 0.1.0-alpha · experimental
+
+**Your Samsung Keyboard, with a touch of Delight.**
+
+Connects Delight5 to Samsung Keyboard and expands the Galaxy AI writing tools. This alpha improves context handling, joined-word splitting, repeated-suggestion filtering and reproduced waits in the rewrite editor.
+
+## Packages
+
+- **Module ZIP:** the main package for the development Galaxy S25+ SM-S936B, Android 16 / One UI 8.5 and Samsung Keyboard 5.9.30.97. Checks compatibility and integrity while retaining Samsung's signed APK.
+- **HoneyDelight Updates 0.1.0-alpha.2** (`versionCode=3`): an optional companion with a refreshed amber interface and adaptive icons. Checks public releases, provides notifications and downloads over unmetered networks, using the same signing certificate as the earlier app. Updating the installed app and its main screen were checked on the development phone. Does not require root or read the keyboard's learned data.
+- **Experimental Keyboard APK:** a complete package with the mod, native library and base models. Signed with a project key; cannot directly update Samsung's official keyboard. Installation, signature permissions and Galaxy AI remain unvalidated; see [FULL_APK.md](FULL_APK.md).
+
+## Requirements and installation
+
+Reference: **Galaxy S25+ SM-S936B · Android 16 / One UI 8.5 · Samsung Keyboard 5.9.30.97 · arm64-v8a**, firmware `S936BXXSBCZG3_OWOBCZG3`, compatibility ID `1a9a24823d75`. The development environment uses KernelSU 3.3.0. The packaging supports a Magisk installation route, but no Magisk version has been validated.
+
+The **ZIP includes the complete mod, Delight5 and base models**. Requires root and an existing compatible Samsung Keyboard installation; does not install the keyboard from scratch or require Gboard. Install through the root manager and keep another keyboard available. The Updates APK is optional; the experimental Keyboard APK does not remove the base-keyboard requirement. [Installation and recovery guide — Spanish](https://github.com/SuperProgramer64/HoneyDelight/blob/main/docs/INSTALLATION.md).
+
+## Verified changes
+
+- Startup uses the current profile's directory and retries temporary failures.
+- Context is refreshed when the phrase or field changes; stale results are discarded and password fields are excluded early.
+- Filters repeated expansions and joined alternatives when a split is accepted.
+- Retains valid splits when the optional budget runs out and performs a final check on space in Google.
+- A local table of 16 common expressions supplements the general splitter, which can conservatively correct one letter in the second word.
+- Excludes corrected composition from the context: `holacomo` and `holaxomo` suggest and commit `hola cómo`; backspace and retyping preserved the split without the reproduced concatenations in interactive checks.
+
+## Tests and limitations
+
+**19 JVM groups passed.** The latest native repeat returned **90/92**, following an earlier 92/92 run, using base models: 23 inputs, two rounds and two coordinate variants. In Google, six common expressions were checked in the suggestion bar and when pressing space, alongside the controls and backspace cycle above. In the latest repeat, `holaxomo` and `holacomo` each failed once with coordinates and a 55 ms budget; that intermittent behavior remains documented. These samples are not an overall accuracy percentage or a general comparison with Gboard.
+
+An earlier broader comparison returned 82/84 expected decisions: the bilingual `erroes → errors` case with simulated coordinates remains open. Module-manager activation, first boot, recovery and an end-to-end public download still need testing. Local ART preparation for the ZIP passed in a test directory on the device.
+
+The removed text-selection “Correct” prototype is not included. Packages exclude the developer's learned history, contacts, emails, personal instructions, logs, keys and passwords. Each installation's learning stays local.
+
+## License
+
+Original code is MIT licensed, © 2026 SuperProgramer64. Third-party components and derived assets retain their own rights; see `LICENSE` and `THIRD_PARTY_NOTICES.md`. This alpha is published for experimentation; module installation and first boot are not yet validated. MIT grants no rights over third-party components.
+
+---
+
+<a id="espanol"></a>
+
 # HoneyDelight 0.1.0-alpha · experimental
 
 **Tu Samsung Keyboard, con un toque de Delight.**
